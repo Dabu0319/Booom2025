@@ -4,26 +4,32 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Dabu10_PlayerControllerRotate : MonoBehaviour
 {
+    public enum PlayerState
+    {
+        Idle,
+        Moving,
+        TacticalDash
+    }
+
     [Header("Input Actions Asset")]
     public InputActionAsset inputActionsAsset;
 
     [Header("Settings")]
     public float moveSpeed = 5f;
-    public float directionLineRotateSpeed = 200f; // 控制方向线旋转速度（输入响应）
-    public float rotationSpeedFactor = 10f;       // 玩家转向速度倍数（角度差越大转越快）
+    public float directionLineRotateSpeed = 200f;
+    public float playerTurnSpeed = 10f;
 
     [Header("References")]
-    public Transform directionLine; // 世界空间下的目标朝向
+    public Transform directionLine;
+    public Animator animator;
+    public LineRenderer tacticalLine; // ← 拖入引用
 
     private Rigidbody2D rb;
     private InputAction moveAction;
     private InputAction stopAction;
 
-    private bool isMoving = false;
     private Vector2 moveInput;
-    
-    
-    public Animator animator; // 动画控制器引用
+    public PlayerState currentState = PlayerState.Idle;
 
     void Awake()
     {
@@ -32,6 +38,11 @@ public class Dabu10_PlayerControllerRotate : MonoBehaviour
 
         moveAction = map.FindAction("Move");
         stopAction = map.FindAction("Stop");
+
+        if (tacticalLine == null)
+        {
+            Debug.LogWarning("Tactical LineRenderer 未设置！");
+        }
     }
 
     void OnEnable()
@@ -48,59 +59,143 @@ public class Dabu10_PlayerControllerRotate : MonoBehaviour
 
     void Update()
     {
-        moveInput = moveAction.ReadValue<Vector2>();
+        if (currentState == PlayerState.TacticalDash)
+        {
+            UpdateTacticalDash();
+            return;
+        }
 
-        if (moveInput != Vector2.zero)
-            isMoving = true;
+        moveInput = moveAction.ReadValue<Vector2>();
 
         if (stopAction.WasPressedThisFrame())
         {
-            isMoving = false;
-            rb.linearVelocity = Vector2.zero;
+            SetState(PlayerState.Idle);
+            return;
         }
 
-        // 控制方向线旋转（独立于玩家）
         if (moveInput.x != 0)
         {
             float angle = directionLine.eulerAngles.z;
             angle -= moveInput.x * directionLineRotateSpeed * Time.deltaTime;
             directionLine.rotation = Quaternion.Euler(0, 0, angle);
         }
+
+        if (moveInput.y > 0.1f)
+        {
+            SetState(PlayerState.Moving);
+        }
+
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            EnterTacticalDash();
+        }
     }
 
     void FixedUpdate()
     {
-        if (isMoving)
+        switch (currentState)
         {
-            // 当前和目标角度
-            float currentAngle = transform.eulerAngles.z;
-            float targetAngle = directionLine.eulerAngles.z;
-            float angleDiff = Mathf.DeltaAngle(currentAngle, targetAngle);
+            case PlayerState.Idle:
+                HandleIdle();
+                break;
 
-            // 越偏差越快旋转
-            float rotateAmount = Mathf.Clamp(angleDiff, -1f, 1f) * rotationSpeedFactor;
-            float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, Mathf.Abs(rotateAmount) * Time.fixedDeltaTime);
-
-            rb.MoveRotation(newAngle);
-            
-            animator.enabled = true; // 启用动画控制器
-
-            // 前进
-            rb.linearVelocity = transform.up * moveSpeed;
-        }
-        else
-        {
-            
-            animator.enabled = false; // 禁用动画控制器
+            case PlayerState.Moving:
+                HandleMovement();
+                break;
         }
     }
 
     void LateUpdate()
     {
-        // 让方向线跟随玩家位置，但不跟随旋转
         if (directionLine != null)
         {
             directionLine.position = transform.position;
         }
+    }
+
+    // ----------------------
+    // State Handlers
+    // ----------------------
+
+    private void HandleIdle()
+    {
+        rb.linearVelocity = Vector2.zero;
+        animator.enabled = false;
+    }
+
+    private void HandleMovement()
+    {
+        float currentAngle = transform.eulerAngles.z;
+        float targetAngle = directionLine.eulerAngles.z;
+        float angleDiff = Mathf.DeltaAngle(currentAngle, targetAngle);
+
+        float rotateAmount = Mathf.Clamp(angleDiff, -1f, 1f) * playerTurnSpeed;
+        float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, Mathf.Abs(rotateAmount) * Time.fixedDeltaTime);
+
+        rb.MoveRotation(newAngle);
+        rb.linearVelocity = transform.up * moveSpeed;
+        animator.enabled = true;
+    }
+
+    // ----------------------
+    // Tactical Dash
+    // ----------------------
+
+    private void EnterTacticalDash()
+    {
+        SetState(PlayerState.TacticalDash);
+        Time.timeScale = 0.1f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        if (tacticalLine != null) tacticalLine.enabled = true;
+        rb.linearVelocity = Vector2.zero;
+    }
+
+    private void UpdateTacticalDash()
+    {
+        Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+        if (tacticalLine != null)
+        {
+            tacticalLine.SetPosition(0, transform.position);
+            tacticalLine.SetPosition(1, mouseWorld);
+        }
+
+        // 实时旋转朝向鼠标
+        Vector2 dir = (mouseWorld - (Vector2)transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+        directionLine.rotation = Quaternion.Euler(0, 0, angle);
+        rb.MoveRotation(angle);
+
+        // 鼠标点击 → 旋转并瞬移
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            rb.MoveRotation(angle);
+            rb.MovePosition(mouseWorld);
+            rb.linearVelocity = transform.up * moveSpeed;
+        }
+
+        // 按 F 退出
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            ExitTacticalDash();
+        }
+    }
+
+    private void ExitTacticalDash()
+    {
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        if (tacticalLine != null) tacticalLine.enabled = false;
+        SetState(PlayerState.Moving);
+    }
+
+    // ----------------------
+    // Utilities
+    // ----------------------
+
+    private void SetState(PlayerState newState)
+    {
+        if (currentState == newState) return;
+        currentState = newState;
     }
 }
