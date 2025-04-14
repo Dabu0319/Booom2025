@@ -1104,7 +1104,6 @@ MonoBehaviour:
   moveSpeed: 4
   directionLineRotateSpeed: 200
   playerTurnSpeed: 120
-  dashSpeed: 300
   directionLine: {fileID: 1656166054}
   animator: {fileID: 1988585084}
   tacticalLine: {fileID: 1792422740}
