@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Dabu10_PlayerController : MonoBehaviour
+
+public class Dabu10_PlayerControllerFourDir : MonoBehaviour
 {
-    [Header("Input Actions Asset")]
+[Header("Input Actions Asset")]
     public InputActionAsset inputActionsAsset;
 
     [Header("Settings")]
     public float moveSpeed = 5f;
-    public float directionLineRotateSpeed = 200f; // 控制方向线旋转速度（输入响应）
     public float rotationSpeedFactor = 10f;       // 玩家转向速度倍数（角度差越大转越快）
 
     [Header("References")]
@@ -21,9 +21,8 @@ public class Dabu10_PlayerController : MonoBehaviour
 
     private bool isMoving = false;
     private Vector2 moveInput;
-    
-    
-    public Animator animator; // 动画控制器引用
+
+    public Animator animator;
 
     void Awake()
     {
@@ -50,21 +49,20 @@ public class Dabu10_PlayerController : MonoBehaviour
     {
         moveInput = moveAction.ReadValue<Vector2>();
 
-        if (moveInput != Vector2.zero)
+        // 如果有方向输入，更新 directionLine 的朝向
+        if (moveInput.sqrMagnitude > 0.01f)
+        {
             isMoving = true;
 
+            float angle = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg - 90f; // up方向为0度
+            directionLine.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
+        // 停止
         if (stopAction.WasPressedThisFrame())
         {
             isMoving = false;
             rb.linearVelocity = Vector2.zero;
-        }
-
-        // 控制方向线旋转（独立于玩家）
-        if (moveInput.x != 0)
-        {
-            float angle = directionLine.eulerAngles.z;
-            angle -= moveInput.x * directionLineRotateSpeed * Time.deltaTime;
-            directionLine.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
 
@@ -72,32 +70,27 @@ public class Dabu10_PlayerController : MonoBehaviour
     {
         if (isMoving)
         {
-            // 当前和目标角度
             float currentAngle = transform.eulerAngles.z;
             float targetAngle = directionLine.eulerAngles.z;
             float angleDiff = Mathf.DeltaAngle(currentAngle, targetAngle);
 
-            // 越偏差越快旋转
+            // 角度差越大旋转越快
             float rotateAmount = Mathf.Clamp(angleDiff, -1f, 1f) * rotationSpeedFactor;
             float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, Mathf.Abs(rotateAmount) * Time.fixedDeltaTime);
 
             rb.MoveRotation(newAngle);
-            
-            animator.enabled = true; // 启用动画控制器
-
-            // 前进
+            animator.enabled = true;
             rb.linearVelocity = transform.up * moveSpeed;
         }
         else
         {
-            
-            animator.enabled = false; // 禁用动画控制器
+            animator.enabled = false;
         }
     }
 
     void LateUpdate()
     {
-        // 让方向线跟随玩家位置，但不跟随旋转
+        // 让方向线跟随玩家位置
         if (directionLine != null)
         {
             directionLine.position = transform.position;
