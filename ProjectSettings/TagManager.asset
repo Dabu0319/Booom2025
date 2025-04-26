@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ParryZone
   - Enemy
+  - Wall
+  - Player1
   layers:
   - Default
   - TransparentFX
@@ -13,8 +15,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Player1
+  - Player2
   - 
   - 
   - 
