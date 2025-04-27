@@ -10,32 +10,39 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         Recover
     }
 
-    public BossState currentState = BossState.Idle;
-
     [Header("Settings")]
-    public float dashForce = 10f;        // 冲刺推力
-    public float bounceForce = 5f;       // 碰撞时弹开的力度
-    public float recoverDuration = 1f;   // Recover状态持续时间
+    public float moveSpeed = 10f;
+    public float recoverDuration = 1f;
+    public float rotationSpeed = 45f;
 
-    private float recoverTimer = 0f;
+    private BossState currentState = BossState.Idle;
+
     private Rigidbody2D rb;
+    private Vector2 moveDirection;
+    private float recoverTimer = 0f;
     private Transform playerTransform;
-
-    private Vector2 dashDirection; // 记录冲刺方向
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0f;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
         playerTransform = GameObject.FindWithTag("Player").transform;
-        EnterDash(); // 开局直接冲刺
+
+        EnterDash();
     }
 
     void Update()
     {
+        transform.Rotate(0, 0, -rotationSpeed * Time.deltaTime);
+
         switch (currentState)
         {
             case BossState.Dash:
-                DashUpdate();
+                // Dash阶段，不需要额外操作，靠速度移动
                 break;
             case BossState.Recover:
                 RecoverUpdate();
@@ -43,28 +50,30 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         }
     }
 
-    void DashUpdate()
+    private void FixedUpdate()
     {
-        rb.AddForce(dashDirection * dashForce);
-    }
-
-    void RecoverUpdate()
-    {
-        recoverTimer -= Time.deltaTime;
-        if (recoverTimer <= 0f)
+        if (currentState == BossState.Dash)
         {
-            EnterDash();
+            rb.linearVelocity = moveDirection.normalized * moveSpeed;
+        }
+        else if (currentState == BossState.Recover)
+        {
+            // Recover期间每帧减速
+            moveSpeed = Mathf.Lerp(moveSpeed, 0f, 2f * Time.fixedDeltaTime); // 2f控制减速速度
+            rb.linearVelocity = moveDirection.normalized * moveSpeed;
         }
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Wall"))
         {
+            Vector2 normal = collision.contacts[0].normal;
+            Vector2 reflectedDirection = Vector2.Reflect(moveDirection, normal).normalized;
+
+            moveDirection = reflectedDirection;
+
             if (currentState == BossState.Dash)
             {
-                Vector2 normal = collision.contacts[0].normal;
-                rb.AddForce(normal * bounceForce, ForceMode2D.Impulse);
                 EnterRecover();
             }
         }
@@ -73,12 +82,24 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     private void EnterDash()
     {
         currentState = BossState.Dash;
-        dashDirection = (playerTransform.position - transform.position).normalized; // 只记录一次
+        moveDirection = (playerTransform.position - transform.position).normalized;
+        moveSpeed = 10f; // ★恢复初始冲刺速度
+        rb.linearVelocity = moveDirection * moveSpeed;
     }
+
 
     private void EnterRecover()
     {
         currentState = BossState.Recover;
         recoverTimer = recoverDuration;
+    }
+
+    private void RecoverUpdate()
+    {
+        recoverTimer -= Time.deltaTime;
+        if (recoverTimer <= 0f)
+        {
+            EnterDash();
+        }
     }
 }
