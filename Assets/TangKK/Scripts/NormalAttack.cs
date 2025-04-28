@@ -5,41 +5,48 @@ namespace TangKK
 {
     public class NormalAttack : MonoBehaviour
     {
+        public float attackDamage = 10f; 
+        private Collider2D attackCollider;
         private PlayerMovementController playerMovement;
-        private bool hasTriggeredAttack = false; // 防止多次触发
+        private Animator animator;
+        private PlayerAnimatorManager playerAnimatorManager;
 
         void Start()
         {
-            playerMovement = GetComponent<PlayerMovementController>();
+            attackCollider = GetComponentInChildren<Collider2D>();
+            playerMovement = GetComponentInParent<PlayerMovementController>();
+            animator = GetComponentInParent<Animator>();
+            playerAnimatorManager = GetComponentInParent<PlayerAnimatorManager>();
+
+            if (attackCollider != null)
+                attackCollider.enabled = true; 
+
+            if (playerMovement == null)
+                Debug.LogError("找不到 PlayerMovementController！请检查父物体是否挂载了！");
+            
+            if (animator == null)
+                Debug.LogError("找不到 Animator！请检查父物体是否挂载了！");
+
+            if (playerAnimatorManager == null)
+                Debug.LogError("找不到 PlayerAnimatorManager！请检查父物体是否挂载了！");
         }
 
-        void Update()
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (playerMovement == null) return;
-
-            // 检查是否处于极限冲刺后摇状态
-            if (playerMovement.GetDashState() == 3)
+            if (other.CompareTag("Enemy"))
             {
-                if (!hasTriggeredAttack)
+                Debug.Log($"命中敌人，造成 {attackDamage} 点伤害！");
+
+                if (playerAnimatorManager != null)
                 {
-                    TriggerAttack();  // 触发攻击
-                    hasTriggeredAttack = true; // 标记已经触发过
+                    playerAnimatorManager.canAttack = false; // 触发后禁止攻击
+                    playerMovement.SetBackwardJumpState(true); // 启动后跳
                 }
-            }
-            else
-            {
-                // 如果不在后摇状态，重置触发器，防止漏掉下次
-                hasTriggeredAttack = false;
-            }
-        }
 
-        /// <summary>
-        /// 你的攻击逻辑写在这里
-        /// </summary>
-        private void TriggerAttack()
-        {
-            Debug.Log("极限冲刺后摇，攻击触发！");
-            // 在这里写你的攻击处理，比如播放动画、伤害判定等等
+                // ❌ 不再禁用 attackCollider
+                // if (attackCollider != null)
+                //     attackCollider.enabled = false;
+            }
         }
     }
 }
