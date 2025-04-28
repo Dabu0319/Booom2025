@@ -52,14 +52,9 @@ public class Dabu10_Boss01Controller : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (currentState == BossState.Dash)
+        if (currentState == BossState.Recover)
         {
-            rb.linearVelocity = moveDirection.normalized * moveSpeed;
-        }
-        else if (currentState == BossState.Recover)
-        {
-            // Recover期间每帧减速
-            moveSpeed = Mathf.Lerp(moveSpeed, 0f, 2f * Time.fixedDeltaTime); // 2f控制减速速度
+            moveSpeed = Mathf.Lerp(moveSpeed, 0f, 2f * Time.fixedDeltaTime);
             rb.linearVelocity = moveDirection.normalized * moveSpeed;
         }
     }
@@ -83,8 +78,8 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     {
         currentState = BossState.Dash;
         moveDirection = (playerTransform.position - transform.position).normalized;
-        moveSpeed = 10f; // ★恢复初始冲刺速度
-        rb.linearVelocity = moveDirection * moveSpeed;
+        moveSpeed = 10f; 
+        rb.linearVelocity = moveDirection * moveSpeed; // ★只在这里设速度
     }
 
 
