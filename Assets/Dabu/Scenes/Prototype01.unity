@@ -1103,7 +1103,7 @@ MonoBehaviour:
   inputActionsAsset: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   moveSpeed: 4
   directionLineRotateSpeed: 200
-  playerTurnSpeed: 120
+  playerTurnSpeed: 79.1
   directionLine: {fileID: 1656166054}
   animator: {fileID: 1988585084}
   tacticalLine: {fileID: 1792422740}
