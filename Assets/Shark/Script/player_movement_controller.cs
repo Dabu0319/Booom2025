@@ -48,12 +48,17 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 playerDirection = Vector2.right;
     private float dashTimer = 0f;
     private float cooldownTimer = 0f;
-    private float pressSpaceTimer = 0f;
+    public float pressSpaceTimer = 0f;
     private bool isDashing = false;
     private bool isUltimateDashing = false;
     private bool isStartAttackRecory = false;
     private bool isBackwardJump = false;
+    private bool isPerfectAttack = false;
+    private bool isSpacedLock = false;
     private bool directionLock = false;
+
+    private bool forceUltimateDash = false;
+    private bool isSpaceReallyPressed = false; // 真实是否按住空格
 
 
 
@@ -64,6 +69,13 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
+        
+        if (forceUltimateDash)
+        {
+            forceUltimateDash = false;
+            StartUltimateDash();
+        }
+        
         HandleDashInput();
         HandleUltimateDashInput();
         
@@ -75,8 +87,10 @@ public class PlayerMovementController : MonoBehaviour
         AttackRecovery();
         BackwardJump();
 
+
+
         UpdateSpeed();
-        if (isDashing || isUltimateDashing)
+        if (isDashing || isUltimateDashing || isStartAttackRecory || isBackwardJump)
         {
             UpdateDash();
             UltimateDashing();
@@ -139,26 +153,30 @@ public class PlayerMovementController : MonoBehaviour
     private void HandleDashInput()
     {
         // 冷却期间不响应输入
-        if (cooldownTimer > 0 || isDashing) return;
+        if (cooldownTimer > 0 || isDashing || isStartAttackRecory || isBackwardJump) return;
 
-        if(Input.GetKey(KeyCode.Space) && isUltimateDashing == false){
-            pressSpaceTimer += Time.deltaTime;
-            if(pressSpaceTimer >= ultimateDashRequiremnetTimer){
-                isUltimateDashing = true;
-                StartUltimateDash();
+        if(isSpacedLock == false){
+
+            if(Input.GetKey(KeyCode.Space) && isUltimateDashing == false){
+                pressSpaceTimer += Time.deltaTime;
+                if(pressSpaceTimer >= ultimateDashRequiremnetTimer){
+                    isUltimateDashing = true;
+                    StartUltimateDash();
+                }
             }
-        }
         
-        // 检测冲刺输入
-        if (Input.GetKeyUp(KeyCode.Space) && isUltimateDashing == false)
-        {
-            StartDash();
-            pressSpaceTimer = 0;
-        }
+            // 检测冲刺输入
+            if (Input.GetKeyUp(KeyCode.Space) && isUltimateDashing == false)
+            {
+                StartDash();
+                pressSpaceTimer = 0;
+            }
+        }    
+
     }
 
 
-    private void StartDash()
+    public void StartDash()
     {
         isDashing = true;
         dashTimer = 0f;
@@ -210,42 +228,54 @@ public class PlayerMovementController : MonoBehaviour
         isDashing = false;
         cooldownTimer = dashCooldown;
         playerRigidbody.linearVelocity = Vector2.zero;
+        print("end D");
     }
 
 
-    private void StartUltimateDash(){
+    public void StartUltimateDash(){
         isUltimateDashing = true;
     }
 
 
     private void UltimateDashing(){
-        if(isUltimateDashing == true && Input.GetKey(KeyCode.Space)){
-            if(moveSpeed <= maxDashSpeed){
-                extraSpeed += increaseSpeedPerSec * Time.fixedDeltaTime;
-                currentSpeed = moveSpeed;
+        if(isSpacedLock == false){
+            print(isSpacedLock);
+            if(isUltimateDashing == true && Input.GetKey(KeyCode.Space)){
+                if(moveSpeed <= maxDashSpeed){
+                    extraSpeed += increaseSpeedPerSec * Time.fixedDeltaTime;
+                    currentSpeed = moveSpeed;
+                }
+                if(directionLock == false){
+                    // 确定冲刺方向（优先使用当前输入方向，若无输入则使用当前面向方向）
+                    Vector2 inputDirection = new Vector2(
+                        Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
+                        Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
+                    );
+                    dashDirection = inputDirection.magnitude > 0.1f 
+                        ? inputDirection.normalized 
+                        : playerDirection;
+                    directionLock = true;
+                }
+                backwardJumpTimer = maxBackwardJumpTime;
+                attackRecoveryTimer = maxAttackRecoveryTime;
+                playerRigidbody.linearVelocity = dashDirection * moveSpeed;
             }
-            if(directionLock == false){
-                // 确定冲刺方向（优先使用当前输入方向，若无输入则使用当前面向方向）
-                Vector2 inputDirection = new Vector2(
-                    Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
-                    Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
-                );
-                dashDirection = inputDirection.magnitude > 0.1f 
-                    ? inputDirection.normalized 
-                    : playerDirection;
-                directionLock = true;
-            }
-            backwardJumpTimer = maxBackwardJumpTime;
-            attackRecoveryTimer = maxAttackRecoveryTime;
-            playerRigidbody.linearVelocity = dashDirection * moveSpeed;
         }
+
 
     }
 
     private void HandleUltimateDashInput(){
         if(isUltimateDashing == true){
+            print("1");
             if(Input.GetKeyUp(KeyCode.Space)){
                 isStartAttackRecory = true;
+                if(isPerfectAttack == false){
+                    print('2');
+                    isSpacedLock = true;
+                    print(isSpacedLock);
+                }
+
             }
         }
     }
@@ -253,7 +283,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private void AttackRecovery(){
         if(isStartAttackRecory == true){
-            isDashing = true;
             attackRecoveryTimer -= Time.fixedDeltaTime;
             if(isBackwardJump == true){
                 isUltimateDashing = false;
@@ -276,6 +305,8 @@ public class PlayerMovementController : MonoBehaviour
         pressSpaceTimer = 0;
         isStartAttackRecory = false;
         attackRecoveryTimer = maxAttackRecoveryTime;
+        isSpacedLock = false;
+        print("end UD");
     }
 
 
@@ -303,7 +334,6 @@ public class PlayerMovementController : MonoBehaviour
             cooldownTimer -= Time.fixedDeltaTime;
         }
     }
-
 
 
 
@@ -343,6 +373,134 @@ public class PlayerMovementController : MonoBehaviour
     }
 
 
+    public void SetAttackRecoryState(bool value){
+        isStartAttackRecory = value;
+    }
+
+
+
+
+
+
+    public void SetBackwardJumpState(bool value)
+    {
+        if (isBackwardJump != value)
+        {
+            isBackwardJump = value;
+            Debug.Log("后跳状态变更: " + value);
+        }
+    }
+
+    public void SetDirection(Vector2 direction)
+    {
+        playerDirection = direction.normalized;
+    }
+
+    // 设置空格锁
+    public void SetSpaceLock(bool value)
+    {
+        isSpacedLock = value;
+        Debug.Log($"空格锁状态变更: {value}");
+    }
+
+    // 读取空格锁（可选，方便外部判断）
+    public bool GetSpaceLock()
+    {
+        return isSpacedLock;
+    }
+
+    public void SetDashDirection(Vector2 direction)
+    {
+        dashDirection = direction.normalized;
+    }
+
+        public void SetDashState(int state)
+    {
+        switch (state)
+        {
+            case 0:
+                isStartAttackRecory = false;
+                isUltimateDashing = false;
+                isDashing = false;
+                break;
+            case 1:
+                isStartAttackRecory = false;
+                isUltimateDashing = false;
+                isDashing = true;
+                break;
+            case 2:
+                isStartAttackRecory = false;
+                isUltimateDashing = true;
+                isDashing = false;
+                break;
+            case 3:
+                isStartAttackRecory = true;
+                isUltimateDashing = false;
+                isDashing = false;
+                break;
+            default:
+                Debug.LogWarning("SetDashState: 不合法的状态码！");
+                break;
+        }
+    }
+
+    public void SetPerfectAttackState(bool value)
+    {
+        isPerfectAttack = value;
+    }
+
+    public void SetUltimateDashing(bool value)
+    {
+        isUltimateDashing = value;
+    }
+
+    public void LockDirection(bool value)
+    {
+        directionLock = value;
+    }
+
+    public void SetExtraSpeed(float value)
+    {
+        extraSpeed = value;
+    }
+
+    public void ForceUltimateDash()
+    {
+        forceUltimateDash = true;   // 标记，等待Update里处理
+    }
+
+
+    public void PrepareUltimateDash()
+{
+    isUltimateDashing = true;
+    dashTimer = 0f;
+    extraSpeed = 0f;
+    isSpacedLock = false;
+    directionLock = false;
+
+    Vector2 inputDirection = new Vector2(
+        Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
+        Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
+    );
+
+    dashDirection = inputDirection.magnitude > 0.1f ? inputDirection.normalized : playerDirection;
+    playerRigidbody.linearVelocity = Vector2.zero;
+
+    Debug.Log("[PrepareUltimateDash] 极限冲刺准备完成！");
+}
+
+
+
+
+
+
+
+    
+
+
+
+
+
 
 
 
@@ -362,6 +520,10 @@ public class PlayerMovementController : MonoBehaviour
             GUI.Label(new Rect(10, 50, 300, 20), $"Cooldown: {cooldownTimer:F1}s");
         }
         GUI.Label(new Rect(10, 70, 300, 20), $"Direction: {playerDirection:F1}");
+
+        GUI.Label(new Rect(10, 90, 300, 20), $"DashState数字: {GetDashState()}");
+
+
     }
 
 
