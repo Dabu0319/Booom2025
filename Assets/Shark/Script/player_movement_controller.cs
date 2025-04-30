@@ -2,8 +2,6 @@ using System.Resources;
 using UnityEngine;
 
 
-namespace shark {
-
 //#############################数据接口################################
 //GetDirection():获取角色当前面朝方向,返回vector2
 //GetSpeed():获取角色当前速度，返回float
@@ -534,4 +532,3 @@ public class PlayerMovementController : MonoBehaviour
 
 }
 
-}
