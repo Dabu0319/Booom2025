@@ -265,6 +265,7 @@ GameObject:
   - component: {fileID: 230006056}
   - component: {fileID: 230006055}
   - component: {fileID: 230006057}
+  - component: {fileID: 230006058}
   m_Layer: 0
   m_Name: Subtract_0
   m_TagString: Enemy
@@ -782,6 +783,33 @@ PolygonCollider2D:
       - {x: -10.339355, y: -10.168457}
       - {x: -8.391113, y: -8.220215}
   m_UseDelaunayMesh: 0
+--- !u!50 &230006058
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230006053}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &302972293
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,6 +1296,7 @@ GameObject:
   - component: {fileID: 844803363}
   - component: {fileID: 844803362}
   - component: {fileID: 844803364}
+  - component: {fileID: 844803365}
   m_Layer: 0
   m_Name: Subtract_0 (1)
   m_TagString: Enemy
@@ -1703,6 +1732,33 @@ PolygonCollider2D:
       - {x: -9.467773, y: -7.6904297}
       - {x: -8.886719, y: -7.092285}
   m_UseDelaunayMesh: 0
+--- !u!50 &844803365
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844803360}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &858670993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1926,6 +1982,7 @@ GameObject:
   - component: {fileID: 938963060}
   - component: {fileID: 938963059}
   - component: {fileID: 938963061}
+  - component: {fileID: 938963062}
   m_Layer: 0
   m_Name: Subtract_0 (2)
   m_TagString: Enemy
@@ -2309,6 +2366,33 @@ PolygonCollider2D:
       - {x: 6.3745117, y: -5.708008}
       - {x: 6.477051, y: -5.588379}
   m_UseDelaunayMesh: 0
+--- !u!50 &938963062
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938963057}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &986524942
 GameObject:
   m_ObjectHideFlags: 0
@@ -3311,6 +3395,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 71327411864474592, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
+      objectReference: {fileID: 0}
     - target: {fileID: 251458111310324242, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -3327,9 +3415,21 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2505888619756732404, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4336397596279351272, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
+      objectReference: {fileID: 0}
     - target: {fileID: 5452675446901466249, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: speedThreshold
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5485746141950938734, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 5696075336743862776, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3390,6 +3490,10 @@ PrefabInstance:
     - target: {fileID: 6369212904650988239, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_BackGroundColor.r
       value: 0.8117648
+      objectReference: {fileID: 0}
+    - target: {fileID: 7474528049344326586, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: dashSpeedCurve.m_Curve.Array.data[0].time
