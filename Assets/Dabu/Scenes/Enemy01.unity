@@ -3189,6 +3189,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: dashSpeedCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: dashSpeedCurve.m_Curve.Array.data[0].value
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8285692864938531556, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_Constraints
       value: 4
