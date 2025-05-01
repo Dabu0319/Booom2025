@@ -14,7 +14,7 @@ public class camera_zoom : MonoBehaviour
     public float zoomSmoothness = 5f;
     [Header("速度检测")]
     [Tooltip("达到此速度才开始缩放"), Min(0.1f)]
-    public float speedThreshold = 3f;
+    public float speedThreshold = 5.5f;
     [Tooltip("速度采样帧数"), Range(3, 20)]
 
     public int bufferSize = 10;
