@@ -24,7 +24,7 @@ public class Dabu10_Boss01Ring : MonoBehaviour
         if (isPaused)
         {
             // 保持自己位置和旋转角度不变
-            transform.position = lastPosition;
+            //transform.position = lastPosition;
             transform.rotation = lastRotation;
 
             pauseTimer -= Time.deltaTime;
@@ -38,7 +38,7 @@ public class Dabu10_Boss01Ring : MonoBehaviour
         {
             // 正常跟随父物体旋转
             lastRotation = transform.rotation;
-            lastPosition = transform.position;
+            //lastPosition = transform.position;
         }
     }
 
@@ -49,9 +49,9 @@ public class Dabu10_Boss01Ring : MonoBehaviour
     }
 
     // 检测被攻击
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("PlayerAttack"))
+        if (other.CompareTag("Weapon") && !isPaused)
         {
             Pause(2f); // 举例：暂停2秒
         }
