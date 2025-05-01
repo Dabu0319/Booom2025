@@ -1003,7 +1003,7 @@ MonoBehaviour:
   - {fileID: 230006055}
   - {fileID: 844803362}
   - {fileID: 938963059}
-  core: {fileID: 0}
+  core: {fileID: 1913309380}
   currentRingAlignedAngle: 0
 --- !u!4 &317040298
 Transform:
