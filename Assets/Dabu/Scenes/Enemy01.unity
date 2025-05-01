@@ -997,6 +997,14 @@ MonoBehaviour:
   moveSpeed: 10
   recoverDuration: 5
   rotationSpeed: 45
+  currentState: 0
+  currentPhase: 0
+  rings:
+  - {fileID: 230006055}
+  - {fileID: 844803362}
+  - {fileID: 938963059}
+  core: {fileID: 0}
+  currentRingAlignedAngle: 0
 --- !u!4 &317040298
 Transform:
   m_ObjectHideFlags: 0
@@ -3183,7 +3191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laserPrefab: {fileID: 7931961064874307993, guid: 2ca20bb0bd3af224995202cf076d5e96, type: 3}
-  rotateDuration: 1
+  laserDuration: 2
   testFire: 0
 --- !u!1 &1927092007
 GameObject:

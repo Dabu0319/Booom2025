@@ -51,22 +51,24 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     public void TryCheckPhase2()
     {
         if (currentPhase == BossPhase.Phase2) return;
+        if (rings == null || rings.Length != 3) return;
 
-        if (!rings[0].isPaused || !rings[1].isPaused || !rings[2].isPaused)
-            return;
-
-        float z0 = rings[0].transform.eulerAngles.z;
-        float z1 = rings[1].transform.eulerAngles.z;
-        float z2 = rings[2].transform.eulerAngles.z;
+        // if (!rings[0].isPaused || !rings[1].isPaused || !rings[2].isPaused)
+        //     return;
+        
+        Debug.Log("Checking Phase 2 in Boss01Controller");
 
         float tolerance = 1f;
-        bool aligned = Mathf.Abs(Mathf.DeltaAngle(z0, z1)) < tolerance &&
-                       Mathf.Abs(Mathf.DeltaAngle(z0, z2)) < tolerance;
 
-        if (aligned)
+        float angle0 = rings[0].transform.eulerAngles.z;
+        float angle1 = rings[1].transform.eulerAngles.z;
+        float angle2 = rings[2].transform.eulerAngles.z;
+
+        if (Mathf.Abs(Mathf.DeltaAngle(angle0, angle1)) < tolerance &&
+            Mathf.Abs(Mathf.DeltaAngle(angle0, angle2)) < tolerance)
         {
-            currentRingAlignedAngle = z0;
             SwitchToPhase2();
+            currentRingAlignedAngle = angle0;
         }
     }
 
