@@ -60,7 +60,7 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Wall"))
+        if (collision.collider.CompareTag("Enemy"))
         {
             Vector2 normal = collision.contacts[0].normal;
             Vector2 reflectedDirection = Vector2.Reflect(moveDirection, normal).normalized;

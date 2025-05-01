@@ -19,6 +19,7 @@ public class CircleSpawner : MonoBehaviour
             float angle = i * Mathf.PI * 2f / numberOfObjects; // 每个的角度
             Vector3 pos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
             GameObject obj = Instantiate(prefab, transform.position + pos, Quaternion.identity, transform);
+            obj.tag = "Enemy";
 
             // 让矩形朝着圆心
             obj.transform.up = (obj.transform.position - transform.position).normalized;
