@@ -11,8 +11,6 @@ namespace TangKK
         private PlayerMovementController playerMovement;
         private PlayerAnimatorManager playerAnimatorManager;
 
-        private PerfectAttack  perfectAttack;
-
         [Header("攻击判定相关")]
         [SerializeField] private Collider2D attackCollider;
 
