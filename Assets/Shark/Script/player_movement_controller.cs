@@ -286,7 +286,10 @@ public class PlayerMovementController : MonoBehaviour
     private void AttackRecovery(){
         if(isStartAttackRecory == true){
             attackRecoveryTimer -= Time.fixedDeltaTime;
-            player.transform.position += (Vector3)(playerDirection * 0.02f);
+            if(attackRecoveryTimer >= maxAttackRecoveryTime/2.0f){
+                player.transform.position += (Vector3)(playerDirection * 0.02f);        
+            }
+            
             if(isBackwardJump == true){
                 isUltimateDashing = false;
                 attackRecoveryTimer = -1;
