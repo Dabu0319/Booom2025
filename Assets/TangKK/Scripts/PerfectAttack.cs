@@ -10,6 +10,7 @@ namespace TangKK
         [SerializeField] private float freezeDuration = 3f;
         [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private float speedPreserveRatio = 0.7f;
+        [SerializeField] private PlayerAnimatorManager playerAnimatorManager; // ✅ 新增引用
 
         private bool isFreezing = false;
         private bool hasTriggeredRecovery = false;
@@ -50,6 +51,12 @@ namespace TangKK
             if (inputDir != Vector2.zero)
             {
                 lastInputDirection = inputDir;
+
+                // ✅ 缓慢旋转而不是瞬间转动
+                if (playerAnimatorManager != null)
+                {
+                    playerAnimatorManager.RotateTowardsDirection(inputDir);
+                }
             }
 
             playerMovementController.SetDirection(inputDir);

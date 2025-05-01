@@ -68,5 +68,29 @@ namespace TangKK
         {
             canAttack = true;
         }
+
+        public void RotateTowardsDirection(Vector2 direction)
+        {
+            if (direction == Vector2.zero) return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction.normalized);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                turnSpeed * Time.unscaledDeltaTime
+            );
+        }
+
+
+
+
+
+
+
+
+
+
+
+        
     }
 }

@@ -694,8 +694,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   freezeDuration: 3
   playerMovementController: {fileID: 1692459129}
-  ultimateDashThreshold: 0.3
   speedPreserveRatio: 0.7
+  playerAnimatorManager: {fileID: 1528379172}
 --- !u!61 &552309973
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1292,6 +1292,7 @@ GameObject:
   - component: {fileID: 1488614813}
   - component: {fileID: 1488614812}
   - component: {fileID: 1488614815}
+  - component: {fileID: 1488614816}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1366,12 +1367,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488614811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.0689368, y: -0.57695824, z: -9.995962}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1692459128}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1488614815
 MonoBehaviour:
@@ -1417,6 +1418,25 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1488614816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488614811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6540e73b52168741929320fd28a06b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1692459128}
+  playerMovementController: {fileID: 1692459129}
+  minSize: 5
+  maxSize: 10
+  zoomSmoothness: 5
+  speedThreshold: 3
+  bufferSize: 10
 --- !u!1 &1528379168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,6 +1566,7 @@ MonoBehaviour:
   isAttacking: 0
   canAttack: 1
   isRunning: 0
+  turnSpeed: 10
 --- !u!61 &1528379173
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1583,8 +1604,8 @@ BoxCollider2D:
   m_Offset: {x: 0.027631104, y: 0.002924502}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.47795418, y: 0.20292784}
-    oldSize: {x: 0.881, y: 3.622}
+    pivot: {x: 0.3081029, y: 0.2715839}
+    oldSize: {x: 0.668, y: 2.806}
     newSize: {x: 0.668, y: 2.806}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1671,6 +1692,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1528379169}
+  - {fileID: 1488614814}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1692459129
@@ -1723,6 +1745,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   playerRigidbody: {fileID: 1692459131}
   player: {fileID: 1692459127}
+  turnSpeed: 10
   pressSpaceTimer: 0
 --- !u!50 &1692459131
 Rigidbody2D:
@@ -2036,6 +2059,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   playerRigidbody: {fileID: 1960959418}
   player: {fileID: 1960959414}
+  turnSpeed: 10
   pressSpaceTimer: 0
 --- !u!4 &1960959416
 Transform:
@@ -2142,6 +2166,7 @@ MonoBehaviour:
   isAttacking: 0
   canAttack: 1
   isRunning: 0
+  turnSpeed: 10
 --- !u!212 &1960959420
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2312,8 +2337,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   freezeDuration: 3
   playerMovementController: {fileID: 1960959415}
-  ultimateDashThreshold: 0.3
   speedPreserveRatio: 0.7
+  playerAnimatorManager: {fileID: 0}
 --- !u!1 &2057031380
 GameObject:
   m_ObjectHideFlags: 0
@@ -2445,7 +2470,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1488614814}
   - {fileID: 1960959416}
   - {fileID: 1960891082}
   - {fileID: 346868732}
