@@ -9,18 +9,31 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         Dash,
         Recover
     }
+    
+    public enum BossPhase
+    {
+        Phase1,
+        Phase2
+    }
 
     [Header("Settings")]
     public float moveSpeed = 10f;
     public float recoverDuration = 1f;
     public float rotationSpeed = 45f;
 
+    [SerializeField]
     private BossState currentState = BossState.Idle;
+    [SerializeField]
+    private BossPhase currentPhase = BossPhase.Phase1;
 
     private Rigidbody2D rb;
     private Vector2 moveDirection;
     private float recoverTimer = 0f;
     private Transform playerTransform;
+    
+    public Dabu10_Boss01Ring[] rings; 
+    public Dabu10_Boss01Core core; 
+    public float currentRingAlignedAngle = 0f;
 
     void Start()
     {
@@ -34,6 +47,29 @@ public class Dabu10_Boss01Controller : MonoBehaviour
 
         EnterDash();
     }
+    
+    public void TryCheckPhase2()
+    {
+        if (currentPhase == BossPhase.Phase2) return;
+
+        if (!rings[0].isPaused || !rings[1].isPaused || !rings[2].isPaused)
+            return;
+
+        float z0 = rings[0].transform.eulerAngles.z;
+        float z1 = rings[1].transform.eulerAngles.z;
+        float z2 = rings[2].transform.eulerAngles.z;
+
+        float tolerance = 1f;
+        bool aligned = Mathf.Abs(Mathf.DeltaAngle(z0, z1)) < tolerance &&
+                       Mathf.Abs(Mathf.DeltaAngle(z0, z2)) < tolerance;
+
+        if (aligned)
+        {
+            currentRingAlignedAngle = z0;
+            SwitchToPhase2();
+        }
+    }
+
 
     void Update()
     {
@@ -48,6 +84,18 @@ public class Dabu10_Boss01Controller : MonoBehaviour
                 RecoverUpdate();
                 break;
         }
+        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SwitchToPhase2();
+        }
+    }
+    
+    
+    private void SwitchToPhase2()
+    {
+        currentPhase = BossPhase.Phase2;
+        Debug.Log("Boss 切换到 Phase 2");
     }
 
     private void FixedUpdate()
@@ -87,6 +135,16 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     {
         currentState = BossState.Recover;
         recoverTimer = recoverDuration;
+
+        if (currentPhase == BossPhase.Phase2)
+        {
+            FireLaser(); // ★ Phase2 特有行为
+        }
+    }
+
+    private void FireLaser()
+    {
+        core.FireSkill(currentRingAlignedAngle);
     }
 
     private void RecoverUpdate()

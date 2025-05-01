@@ -12,13 +12,18 @@ public class Dabu10_Boss01Ring : MonoBehaviour
     private Transform bossRoot;
     
     
+    private Dabu10_Boss01Controller bossController;
+    
+    
 
     void Start()
     {
         bossRoot = transform.parent;
         lastRotation = transform.rotation;
         lastPosition = transform.position;
-        pauseTimer = defaultPauseTime; // 初始化暂停计时器
+        pauseTimer = defaultPauseTime;
+
+        bossController = GetComponentInParent<Dabu10_Boss01Controller>();
     }
 
     void Update()
@@ -30,11 +35,16 @@ public class Dabu10_Boss01Ring : MonoBehaviour
             transform.rotation = lastRotation;
 
             pauseTimer -= Time.deltaTime;
-            if (pauseTimer <= 0f)
+            if (pauseTimer <= 0f && isPaused)
             {
                 isPaused = false;
-                pauseTimer = defaultPauseTime; // 重置暂停计时器
+                pauseTimer = defaultPauseTime;
+
+                bossController?.TryCheckPhase2();
+                Debug.Log("Check Phase 2");
             }
+
+
         }
         else
         {
@@ -48,6 +58,9 @@ public class Dabu10_Boss01Ring : MonoBehaviour
     {
         isPaused = true;
         pauseTimer = duration;
+        
+        
+        
     }
 
     // 检测被攻击

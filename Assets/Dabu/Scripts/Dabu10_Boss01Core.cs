@@ -3,61 +3,64 @@ using UnityEngine;
 public class Dabu10_Boss01Core : MonoBehaviour
 {
     private bool isFiring = false;
-    private float currentRotation = 0f;
+    private float fireTimer = 0f;
 
     public GameObject laserPrefab;
     private GameObject activeLaser;
 
-    private Quaternion startRotation;
-
     [Header("Skill Settings")]
-    public float rotateDuration = 0.5f; // 完成一圈需要多少秒
-    private float rotateSpeedDuringSkill; // 自动算出来，每秒多少度
+    public float laserDuration = 2f; // 激光持续时间（不旋转）
 
     [Header("Test Fire Button")]
     public bool testFire = false;
 
     void Update()
     {
-        // 测试按钮，按一下发射一次
+        // 测试按钮触发
         if (testFire)
         {
             testFire = false;
-            FireSkill();
+            //FireSkill();
         }
 
         if (isFiring)
         {
-            float deltaRotation = rotateSpeedDuringSkill * Time.deltaTime;
-            transform.Rotate(0, 0, -deltaRotation); // 快速旋转
-            currentRotation += deltaRotation;
-
-            if (currentRotation >= 360f)
+            fireTimer -= Time.deltaTime;
+            if (fireTimer <= 0f)
             {
                 EndSkill();
             }
         }
     }
 
-    public void FireSkill()
+    public void FireSkill(float ringAngleZ)
     {
-        if (isFiring) return; // 防止重复触发
+        if (isFiring) return;
 
         isFiring = true;
-        currentRotation = 0f;
-        startRotation = transform.rotation;
+        fireTimer = laserDuration;
 
-        // 根据时间算出转速
-        rotateSpeedDuringSkill = 360f / rotateDuration; 
+        // Ring视觉开口为 z，Laser默认向右 ⇒ 修正 -90°
+        float finalAngle = ringAngleZ - 90f;
+        Quaternion laserRotation = Quaternion.Euler(0, 0, finalAngle);
 
-        activeLaser = Instantiate(laserPrefab, transform.position, transform.rotation, transform);
+        activeLaser = Instantiate(laserPrefab, transform.position, laserRotation);
+
+        Vector3 parentScale = transform.lossyScale;
+        Vector3 inverseScale = new Vector3(
+            1f / parentScale.x,
+            1f / parentScale.y,
+            1f / parentScale.z
+        );
+
+        activeLaser.transform.SetParent(transform, worldPositionStays: true);
+        activeLaser.transform.localScale = inverseScale;
     }
-
     private void EndSkill()
     {
         isFiring = false;
+
         if (activeLaser != null)
             Destroy(activeLaser);
-        transform.rotation = startRotation;
     }
 }
