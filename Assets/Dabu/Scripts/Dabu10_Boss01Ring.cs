@@ -51,7 +51,7 @@ public class Dabu10_Boss01Ring : MonoBehaviour
     // 检测被攻击
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !isPaused)
+        if (other.CompareTag("Weapon") && !isPaused)
         {
             Pause(2f); // 举例：暂停2秒
         }
