@@ -317,7 +317,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if(isBackwardJump && backwardJumpTimer > 0){
             backwardJumpTimer -= Time.fixedDeltaTime;
-            player.transform.position -= (Vector3)(playerDirection * 0.5f);
+            player.transform.position -= (Vector3)(playerDirection * 0.2f);
             print(playerDirection);
         }
         if(isBackwardJump && backwardJumpTimer <= 0){

@@ -11,10 +11,6 @@ namespace TangKK
         {
             playerMovement = GetComponentInParent<PlayerMovementController>();
 
-            if (playerMovement == null)
-            {
-                Debug.LogError("NormalDash: 找不到 PlayerMovementController，请确认父物体挂载了！");
-            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)

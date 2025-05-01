@@ -23,11 +23,6 @@ namespace TangKK
             playerMovement = GetComponentInParent<PlayerMovementController>();
             playerAnimatorManager = GetComponentInParent<PlayerAnimatorManager>();
 
-            if (playerMovement == null)
-                Debug.LogError("AttackManager: 找不到 PlayerMovementController，请确认挂载正确！");
-            
-            if (playerAnimatorManager == null)
-                Debug.LogError("AttackManager: 找不到 PlayerAnimatorManager，请确认挂载正确！");
         }
 
         private void Update()

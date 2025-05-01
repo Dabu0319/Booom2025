@@ -21,14 +21,6 @@ namespace TangKK
             if (attackCollider != null)
                 attackCollider.enabled = true; 
 
-            if (playerMovement == null)
-                Debug.LogError("找不到 PlayerMovementController！请检查父物体是否挂载了！");
-            
-            if (animator == null)
-                Debug.LogError("找不到 Animator！请检查父物体是否挂载了！");
-
-            if (playerAnimatorManager == null)
-                Debug.LogError("找不到 PlayerAnimatorManager！请检查父物体是否挂载了！");
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -42,10 +34,6 @@ namespace TangKK
                     playerAnimatorManager.canAttack = false; // 触发后禁止攻击
                     playerMovement.SetBackwardJumpState(true); // 启动后跳
                 }
-
-                // ❌ 不再禁用 attackCollider
-                // if (attackCollider != null)
-                //     attackCollider.enabled = false;
             }
         }
     }
