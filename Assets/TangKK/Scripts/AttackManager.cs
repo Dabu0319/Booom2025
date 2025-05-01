@@ -26,10 +26,10 @@ namespace TangKK
         {
             if (playerMovement == null || playerAnimatorManager == null) return;
 
-            int dashState = playerMovement.GetDashState();
+            bool dashState = playerMovement.GetisStartAttackRecory();
 
             // 🔥如果Dash状态不是3（攻击状态），就可以恢复攻击
-            if (dashState != 3)
+            if (dashState == false)
             {
                 if (!playerAnimatorManager.canAttack)
                 {

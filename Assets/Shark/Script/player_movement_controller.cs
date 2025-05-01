@@ -23,7 +23,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float dashDuration = 0.5f;
     [SerializeField] private float dashCooldown = 1f;
     //触发极限冲刺所需的按住空格时间
-    [SerializeField] private float ultimateDashRequiremnetTimer = 0.3f; 
+    [SerializeField] public float ultimateDashRequiremnetTimer = 0.3f; 
     [SerializeField] private float maxDashSpeed = 15.0f;
     [SerializeField] private float increaseSpeedPerSec = 5.0f;
     [SerializeField] private float attackRecoveryTimer = 0f;
@@ -38,6 +38,11 @@ public class PlayerMovementController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Rigidbody2D playerRigidbody;
     [SerializeField] private GameObject player;
+
+    //人物转身速度
+    [SerializeField] private float turnSpeed = 10f;
+
+
     
     // 运行时状态
     private float currentSpeed = 0;
@@ -58,7 +63,6 @@ public class PlayerMovementController : MonoBehaviour
     private bool directionLock = false;
 
     private bool forceUltimateDash = false;
-    private bool isSpaceReallyPressed = false; // 真实是否按住空格
 
 
 
@@ -487,16 +491,31 @@ public class PlayerMovementController : MonoBehaviour
     playerRigidbody.linearVelocity = Vector2.zero;
 
     Debug.Log("[PrepareUltimateDash] 极限冲刺准备完成！");
+    
 }
 
 
+    public bool GetisStartAttackRecory(){
+        return isStartAttackRecory;
+    }
 
 
 
+    public void SetisStartAttackRecory(bool value){
+        isStartAttackRecory = value;
+    }
 
 
-    
-
+    // ✅ 新增：用于 PerfectAttack 恢复移动
+    public void ForceMoveInDirection(Vector2 inputDirection)
+    {
+        if (inputDirection.magnitude > 0.1f)
+        {
+            SetDirection(inputDirection);
+            SetDashDirection(inputDirection);
+            playerRigidbody.linearVelocity = inputDirection.normalized * (baseSpeed + extraSpeed);
+        }
+    }
 
 
 
