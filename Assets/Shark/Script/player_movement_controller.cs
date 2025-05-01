@@ -517,12 +517,6 @@ public class PlayerMovementController : MonoBehaviour
     }
 
 
-    public bool GetisBackJump()
-    {
-        return isBackwardJump;
-    }
-
-
 
 
 

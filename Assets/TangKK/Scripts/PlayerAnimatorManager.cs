@@ -13,8 +13,6 @@ namespace TangKK
         public bool canAttack = true;
         public bool isRunning = false;
 
-        public bool isBackJump = false;
-
         [Header("旋转控制")]
         [SerializeField] private float turnSpeed = 10f;
 
@@ -38,10 +36,6 @@ namespace TangKK
 
             isRunning = rb.linearVelocity.magnitude > 0.05f;
             animator.SetBool("isRunning", isRunning);
-
-            isBackJump = playerMovement.GetisBackJump();
-            animator.SetBool("isBackJump", isBackJump);
-
         }
 
         private void LateUpdate()

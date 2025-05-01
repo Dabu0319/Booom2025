@@ -1256,17 +1256,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &712102685 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6909202934571399830, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-  m_PrefabInstance: {fileID: 1932723597}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6411086261e312849a40378e39c63c08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &844803360
 GameObject:
   m_ObjectHideFlags: 0
@@ -2454,11 +2443,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 158.148}
---- !u!61 &1102626246 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 37168140435626396, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-  m_PrefabInstance: {fileID: 1932723597}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1112710175
 GameObject:
   m_ObjectHideFlags: 0
@@ -3352,29 +3336,13 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2505888619756732404, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2505888619756732404, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_TagString
       value: Weapon
-      objectReference: {fileID: 0}
-    - target: {fileID: 2618111337494492593, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4336397596279351272, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_TagString
       value: Weapon
       objectReference: {fileID: 0}
-    - target: {fileID: 5127723845234947621, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-      propertyPath: boxCollider
-      value: 
-      objectReference: {fileID: 1102626246}
-    - target: {fileID: 5127723845234947621, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-      propertyPath: attackManager
-      value: 
-      objectReference: {fileID: 712102685}
     - target: {fileID: 5452675446901466249, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: speedThreshold
       value: 5
@@ -3443,10 +3411,6 @@ PrefabInstance:
       propertyPath: m_BackGroundColor.r
       value: 0.8117648
       objectReference: {fileID: 0}
-    - target: {fileID: 6909202934571399830, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-      propertyPath: attackCollider
-      value: 
-      objectReference: {fileID: 1102626246}
     - target: {fileID: 7474528049344326586, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_TagString
       value: Weapon
