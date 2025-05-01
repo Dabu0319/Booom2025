@@ -659,7 +659,7 @@ GameObject:
   - component: {fileID: 552309972}
   - component: {fileID: 552309973}
   m_Layer: 0
-  m_Name: PerfectAttack
+  m_Name: PerfectAttack1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1604,8 +1604,8 @@ BoxCollider2D:
   m_Offset: {x: 0.027631104, y: 0.002924502}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.3081029, y: 0.2715839}
-    oldSize: {x: 0.668, y: 2.806}
+    pivot: {x: 0.47795418, y: 0.20292784}
+    oldSize: {x: 0.881, y: 3.622}
     newSize: {x: 0.668, y: 2.806}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

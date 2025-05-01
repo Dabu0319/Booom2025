@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace TangKK
 {
-    public class PerfectAttack : MonoBehaviour
+    public class PerfectAttackFreeze : MonoBehaviour
     {
         [Header("Freeze Settings")]
         [SerializeField] private float freezeDuration = 3f;
@@ -14,6 +14,9 @@ namespace TangKK
 
         private bool isFreezing = false;
         private bool hasTriggeredRecovery = false;
+        private bool canTriggerPerfectAttack = true;
+
+        private bool pendingFreeze = false; // ✅ 新增：下一帧执行 Freeze
 
         private Vector3 frozenPosition;
         private Vector2 frozenVelocity;
@@ -23,10 +26,30 @@ namespace TangKK
         private float freezeTimer = 0f;
         private float pressSpaceTimer = 0f;
 
-        private bool canTriggerPerfectAttack = true; // ✅ 新增：控制是否可触发完美攻击
+        // ✅ 被 Trigger 脚本调用，发起冻结请求
+        public void RequestFreeze()
+        {
+            if (!isFreezing && canTriggerPerfectAttack)
+            {
+                isFreezing = true;        // ✅ 马上进入冻结状态，允许输入处理
+                pendingFreeze = true;    // ✅ 下一帧再正式执行 FreezeTime
+            }
+        }
+
+        // ✅ 提供给 Trigger 判断是否可触发
+        public bool CanRequestFreeze()
+        {
+            return canTriggerPerfectAttack && !isFreezing;
+        }
 
         private void Update()
         {
+            if (pendingFreeze)
+            {
+                pendingFreeze = false;
+                StartCoroutine(FreezeTime()); // ✅ 下一帧执行冻结逻辑
+            }
+
             if (!isFreezing) return;
 
             freezeTimer += Time.unscaledDeltaTime;
@@ -34,10 +57,8 @@ namespace TangKK
             HandleInputDuringFreeze();
             LockPositionDuringFreeze();
 
-            // ✅ 时停时间到，自动恢复（无冲刺）
             if (freezeTimer >= freezeDuration && !hasTriggeredRecovery)
             {
-                GetComponent<Collider2D>().enabled = true;
                 hasTriggeredRecovery = true;
                 ResumeTime(false, 0f);
             }
@@ -45,7 +66,6 @@ namespace TangKK
 
         private void HandleInputDuringFreeze()
         {
-            // ✅ 读取方向输入
             Vector2 inputDir = new Vector2(
                 Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
                 Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
@@ -55,7 +75,6 @@ namespace TangKK
             {
                 lastInputDirection = inputDir;
 
-                // ✅ 缓慢旋转而不是瞬间转动
                 if (playerAnimatorManager != null)
                 {
                     playerAnimatorManager.RotateTowardsDirection(inputDir);
@@ -71,7 +90,6 @@ namespace TangKK
                 {
                     pressSpaceTimer += Time.unscaledDeltaTime;
 
-                    // ✅ 长按达到极限冲刺时间 ➜ 自动触发极限冲刺
                     if (pressSpaceTimer >= playerMovementController.ultimateDashRequiremnetTimer)
                     {
                         hasTriggeredRecovery = true;
@@ -80,7 +98,6 @@ namespace TangKK
                     }
                 }
 
-                // ✅ 松开空格 ➜ 根据时间判断普通 or 极限冲刺
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
                     hasTriggeredRecovery = true;
@@ -93,15 +110,12 @@ namespace TangKK
         {
             if (Time.timeScale == 0f)
             {
-                GetComponent<Collider2D>().enabled = false;
                 transform.position = frozenPosition;
-                // 可添加冻结动画、特效等
             }
         }
 
         private IEnumerator FreezeTime()
         {
-            isFreezing = true;
             hasTriggeredRecovery = false;
 
             freezeTimer = 0f;
@@ -120,7 +134,7 @@ namespace TangKK
             playerMovementController.LockDirection(false);
             playerMovementController.SetisStartAttackRecory(false);
 
-            canTriggerPerfectAttack = false; // ✅ 禁用攻击
+            canTriggerPerfectAttack = false;
 
             Debug.Log($"[时停启动] 位置:{frozenPosition} 速度:{frozenVelocity} 方向:{frozenDirection}");
 
@@ -131,7 +145,6 @@ namespace TangKK
         {
             Time.timeScale = 1f;
             isFreezing = false;
-            GetComponent<Collider2D>().enabled = true;
 
             playerMovementController.SetSpaceLock(false);
             playerMovementController.LockDirection(false);
@@ -169,21 +182,9 @@ namespace TangKK
                 Debug.Log("[时停] 自动恢复，无冲刺");
             }
 
-            // ✅ 清空计时器
             pressSpaceTimer = 0f;
             freezeTimer = 0f;
-
-            canTriggerPerfectAttack = true; // ✅ 恢复攻击能力
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (!canTriggerPerfectAttack) return; // ✅ 禁止攻击期间不触发
-
-            if (collision.CompareTag("Enemy") && !isFreezing)
-            {
-                StartCoroutine(FreezeTime());
-            }
+            canTriggerPerfectAttack = true;
         }
 
         private void OnGUI()
