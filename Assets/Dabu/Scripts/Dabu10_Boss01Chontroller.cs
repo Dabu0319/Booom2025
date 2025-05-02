@@ -45,7 +45,9 @@ public class Dabu10_Boss01Controller : MonoBehaviour
 
         playerTransform = GameObject.FindWithTag("Player").transform;
 
-        EnterDash();
+        //EnterDash();
+        //enter dash after 3 seconds
+        Invoke("EnterDash", 3f);
     }
     
     public void TryCheckPhase2()
