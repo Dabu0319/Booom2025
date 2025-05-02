@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &115754180 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 721285183936019187, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+  m_PrefabInstance: {fileID: 1932723597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &230006053
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,6 +1447,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6411086261e312849a40378e39c63c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &728177101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 728177103}
+  - component: {fileID: 728177102}
+  m_Layer: 0
+  m_Name: DeathMarker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &728177102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728177101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b73aeb799e0c1d4d8bdc7b613cdf7f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathMarkerPrefab: {fileID: 4400300009714689397, guid: 4641858b06020bf4b8e5448828d5c945, type: 3}
+  hasPosition: 0
+--- !u!4 &728177103
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728177101}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.3196115, y: 1.375666, z: -0.048821654}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &823822790 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5696075336743862776, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
@@ -2446,6 +2497,25 @@ PolygonCollider2D:
       - {x: 6.3745117, y: -5.708008}
       - {x: 6.477051, y: -5.588379}
   m_UseDelaunayMesh: 0
+--- !u!1 &990287904 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+  m_PrefabInstance: {fileID: 1932723597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &990287910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990287904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84477866d7925af4aae0fb50f9b58ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCharacter: {fileID: 115754180}
+  resetDelay: 1.5
 --- !u!61 &1102626246 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 37168140435626396, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
@@ -2997,6 +3067,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 712102685}
     - target: {fileID: 5452675446901466249, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 317040298}
+    - target: {fileID: 5452675446901466249, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 823822790}
+    - target: {fileID: 5452675446901466249, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: mapCenter
+      value: 
+      objectReference: {fileID: 922543297}
+    - target: {fileID: 5452675446901466249, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: speedThreshold
       value: 5
       objectReference: {fileID: 0}
@@ -3111,6 +3193,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2112296635}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 990287910}
     - targetCorrespondingSourceObject: {fileID: 2946043326695047574, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 933921275}
@@ -3532,3 +3617,4 @@ SceneRoots:
   - {fileID: 2068724901}
   - {fileID: 1948918042}
   - {fileID: 1867299109}
+  - {fileID: 728177103}

@@ -15,8 +15,12 @@ public class player_death : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // 可以使用标签检测敌人，也可以在敌人身上添加特定组件检测
-        if (!isDead && collision.CompareTag("Enemy"))
+        if (!isDead && collision.gameObject.CompareTag("Enemy"))
         {
+            if (DeathMarker2D.Instance != null)
+            {
+                DeathMarker2D.Instance.RecordDeathPosition(playerCharacter.transform.position);
+            }
             Die();
         }
     }
