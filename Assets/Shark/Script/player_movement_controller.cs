@@ -137,9 +137,9 @@ public class PlayerMovementController : MonoBehaviour
 
         // 获取WASD输入
         Vector2 inputDirection = new Vector2(
-            Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
-            Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
-        ).normalized;
+            Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
+            Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
+        );
 
         if (inputDirection.magnitude > 0.1f)
         {
@@ -168,7 +168,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if(isSpacedLock == false){
 
-            if(Input.GetKey(KeyCode.Space) && isUltimateDashing == false){
+            if(Input.GetButton("Jump") && isUltimateDashing == false){
                 pressSpaceTimer += Time.deltaTime;
                 if(pressSpaceTimer >= ultimateDashRequiremnetTimer){
                     isUltimateDashing = true;
@@ -177,7 +177,7 @@ public class PlayerMovementController : MonoBehaviour
             }
         
             // 检测冲刺输入
-            if (Input.GetKeyUp(KeyCode.Space) && isUltimateDashing == false)
+            if (Input.GetButtonUp("Jump") && isUltimateDashing == false)
             {
                 StartDash();
                 pressSpaceTimer = 0;
@@ -192,10 +192,9 @@ public class PlayerMovementController : MonoBehaviour
         isDashing = true;
         dashTimer = 0f;
         
-        // 确定冲刺方向（优先使用当前输入方向，若无输入则使用当前面向方向）
         Vector2 inputDirection = new Vector2(
-            Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
-            Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
+            Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
+            Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
         );
 
 
@@ -254,7 +253,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void UltimateDashing(){
         if(isSpacedLock == false){
-            if(isUltimateDashing == true && Input.GetKey(KeyCode.Space)){
+            if(isUltimateDashing == true && Input.GetButton("Jump")){
                 if(moveSpeed <= maxDashSpeed){
                     extraSpeed += increaseSpeedPerSec * Time.fixedDeltaTime;
                     currentSpeed = moveSpeed;
@@ -262,8 +261,8 @@ public class PlayerMovementController : MonoBehaviour
                 if(directionLock == false){
                     // 确定冲刺方向（优先使用当前输入方向，若无输入则使用当前面向方向）
                     Vector2 inputDirection = new Vector2(
-                        Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
-                        Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
+                        Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
+                        Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
                     );
                     if(isMouseControl){
                         dashDirection = playerDirection;
@@ -287,7 +286,7 @@ public class PlayerMovementController : MonoBehaviour
     private void HandleUltimateDashInput(){
         if(isUltimateDashing == true){
             print("1");
-            if(Input.GetKeyUp(KeyCode.Space)){
+            if(Input.GetButtonUp("Jump")){
                 isStartAttackRecory = true;
                 if(isPerfectAttack == false){
                     print('2');
@@ -502,8 +501,8 @@ public class PlayerMovementController : MonoBehaviour
     directionLock = false;
 
     Vector2 inputDirection = new Vector2(
-        Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
-        Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
+        Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
+        Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
     );
 
     dashDirection = inputDirection.magnitude > 0.1f ? inputDirection.normalized : playerDirection;
