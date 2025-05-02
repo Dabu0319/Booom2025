@@ -20,6 +20,7 @@ public class camera_zoom : MonoBehaviour
     public float speedThreshold = 5.5f;
     [Tooltip("速度采样帧数"), Range(3, 20)]
 
+
     public int bufferSize = 10;
     // 运行时变量
     private Camera cam;
@@ -28,6 +29,7 @@ public class camera_zoom : MonoBehaviour
     private int bufferIndex;
     private Rigidbody2D targetRb;
     private int playerDashState;
+    public bool needEnemy;
  
     void Awake()
     {
@@ -62,6 +64,7 @@ public class camera_zoom : MonoBehaviour
         float currentSpeed = CalculateCurrentSpeed();
         float targetSize = CalculateTargetSize(currentSpeed);
         ApplyZoom(targetSize);
+
     }
     float CalculateCurrentSpeed()
     {
@@ -99,7 +102,13 @@ public class camera_zoom : MonoBehaviour
     }
 
     private void CalculateCameraCenter(){
-        cameraPosition.x = ((player.position.x + enemy.position.x)*0.5f+(1*player.position.x + 2*mapCenter.position.x)/3.0f)*0.5f;
-        cameraPosition.y = ((player.position.y + enemy.position.y)*0.5f+(1*player.position.y + 2*mapCenter.position.y)/3.0f)*0.5f;
+        if(needEnemy){
+            cameraPosition.x = ((player.position.x + enemy.position.x)*0.5f+(2*player.position.x + 1*mapCenter.position.x)/3.0f)*0.5f;
+            cameraPosition.y = ((2*player.position.y + enemy.position.y)/3.0f+(2*player.position.y + 1*mapCenter.position.y)/3.0f)*0.5f;
+        }else{
+            cameraPosition.x = (1*player.position.x + 2*mapCenter.position.x)/3.0f;
+            cameraPosition.y = (2*player.position.y + 1*mapCenter.position.y)/3.0f;   
+        }
+
     }
 }
