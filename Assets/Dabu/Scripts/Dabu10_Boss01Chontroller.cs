@@ -53,23 +53,33 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         if (currentPhase == BossPhase.Phase2) return;
         if (rings == null || rings.Length != 3) return;
 
-        // if (!rings[0].isPaused || !rings[1].isPaused || !rings[2].isPaused)
-        //     return;
-        
-        Debug.Log("Checking Phase 2 in Boss01Controller");
+        float angle0 = RoundAngle(rings[0].transform.eulerAngles.z);
+        float angle1 = RoundAngle(rings[1].transform.eulerAngles.z);
+        float angle2 = RoundAngle(rings[2].transform.eulerAngles.z);
 
-        float tolerance = 1f;
+        float delta01 = Mathf.Abs(Mathf.DeltaAngle(angle0, angle1));
+        float delta02 = Mathf.Abs(Mathf.DeltaAngle(angle0, angle2));
 
-        float angle0 = rings[0].transform.eulerAngles.z;
-        float angle1 = rings[1].transform.eulerAngles.z;
-        float angle2 = rings[2].transform.eulerAngles.z;
+        Debug.Log($"[Phase2检测] 角度: {angle0}, {angle1}, {angle2}");
+        Debug.Log($"[差值] Δ01: {delta01}, Δ02: {delta02}");
 
-        if (Mathf.Abs(Mathf.DeltaAngle(angle0, angle1)) < tolerance &&
-            Mathf.Abs(Mathf.DeltaAngle(angle0, angle2)) < tolerance)
+        float tolerance = 1f; // 仍保留容差
+
+        if (delta01 < tolerance && delta02 < tolerance)
         {
-            SwitchToPhase2();
+            Debug.Log("✅ 所有角度一致，触发 Phase2，角度为：" + angle0);
             currentRingAlignedAngle = angle0;
+            SwitchToPhase2();
         }
+        else
+        {
+            Debug.Log("❌ 角度不一致，不进入 Phase2");
+        }
+    }
+
+    float RoundAngle(float angle)
+    {
+        return Mathf.Round(angle * 10f) / 10f;
     }
 
 
