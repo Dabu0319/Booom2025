@@ -1,9 +1,12 @@
+
 using UnityEngine;
 
 public class camera_zoom : MonoBehaviour
 {
     [Header("必填参数")]
-    public Transform target;          // 目标对象（玩家）
+    public Transform player;          // 目标对象（玩家）
+    public Transform enemy;
+    public Transform mapCenter;
     public PlayerMovementController playerMovementController;
     [Header("视野控制")]
     [Tooltip("静止时的视野大小")]
@@ -21,6 +24,7 @@ public class camera_zoom : MonoBehaviour
     // 运行时变量
     private Camera cam;
     private Vector3[] positionBuffer;
+    private Vector3 cameraPosition;
     private int bufferIndex;
     private Rigidbody2D targetRb;
     private int playerDashState;
@@ -28,28 +32,29 @@ public class camera_zoom : MonoBehaviour
     void Awake()
     {
         cam = GetComponent<Camera>();
-        targetRb = target.GetComponent<Rigidbody2D>();
+        targetRb = player.GetComponent<Rigidbody2D>();
         
         // 初始化位置缓存
         positionBuffer = new Vector3[bufferSize];
         for (int i = 0; i < bufferSize; i++)
         {
-            positionBuffer[i] = target.position;
+            positionBuffer[i] = player.position;
         }
     }
     void Update()
     {
         // 循环更新位置缓存
-        positionBuffer[bufferIndex] = target.position;
+        positionBuffer[bufferIndex] = player.position;
         bufferIndex = (bufferIndex + 1) % bufferSize;
         playerDashState = playerMovementController.GetDashState();
     }
     void LateUpdate()
     {
+        CalculateCameraCenter();
         // 直接使用目标位置
         transform.position = new Vector3(
-            target.position.x,
-            target.position.y,
+            cameraPosition.x,
+            cameraPosition.y,
             transform.position.z
         );
         // 计算速度并调整视野
@@ -91,5 +96,10 @@ public class camera_zoom : MonoBehaviour
             targetSize,
             Time.deltaTime * zoomSmoothness
         );
+    }
+
+    private void CalculateCameraCenter(){
+        cameraPosition.x = ((player.position.x + enemy.position.x)*0.5f+(1*player.position.x + 2*mapCenter.position.x)/3.0f)*0.5f;
+        cameraPosition.y = ((player.position.y + enemy.position.y)*0.5f+(1*player.position.y + 2*mapCenter.position.y)/3.0f)*0.5f;
     }
 }
