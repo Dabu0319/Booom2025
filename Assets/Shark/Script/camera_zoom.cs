@@ -4,7 +4,7 @@ using UnityEngine;
 public class camera_zoom : MonoBehaviour
 {
     [Header("必填参数")]
-    public Transform player;          // 目标对象（玩家）
+    public Transform player;
     public Transform enemy;
     public Transform mapCenter;
     public PlayerMovementController playerMovementController;
