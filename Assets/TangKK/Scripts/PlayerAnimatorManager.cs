@@ -33,7 +33,7 @@ namespace TangKK
         {
             if (playerMovement == null || animator == null || rb == null) return;
 
-            isAttacking = playerMovement.GetisStartAttackRecory() && canAttack;
+            isAttacking = playerMovement.GetisStartAttackRecory() && canAttack && isBackJump == false;
             animator.SetBool("isAttacking", isAttacking);
 
             isRunning = rb.linearVelocity.magnitude > 0.05f;
