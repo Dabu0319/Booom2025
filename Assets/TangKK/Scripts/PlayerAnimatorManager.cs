@@ -14,6 +14,7 @@ namespace TangKK
         public bool isRunning = false;
 
         public bool isBackJump = false;
+        public bool isDash = false;
 
         [Header("旋转控制")]
         [SerializeField] private float turnSpeed = 10f;
@@ -41,6 +42,10 @@ namespace TangKK
 
             isBackJump = playerMovement.GetisBackJump();
             animator.SetBool("isBackJump", isBackJump);
+
+            isDash = playerMovement.GetDashState() ==2 == true;
+            animator.SetBool("isDash", isDash);
+
 
         }
 
