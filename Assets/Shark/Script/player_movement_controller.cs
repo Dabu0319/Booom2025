@@ -49,6 +49,8 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 currentVelocity;
     private Vector2 dashDirection;
     private Vector2 playerDirection = Vector2.right;
+    private Vector3 mouseWorldPos;
+    private Vector2 mouseDirection;
     private float dashTimer = 0f;
     private float cooldownTimer = 0f;
     public float pressSpaceTimer = 0f;
@@ -71,7 +73,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        
+        mousePositionDirection();
         if (forceUltimateDash)
         {
             forceUltimateDash = false;
@@ -112,7 +114,12 @@ public class PlayerMovementController : MonoBehaviour
 
 
 
-
+    private void mousePositionDirection(){
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPos.z = 0;
+        //计算方向
+        mouseDirection = ((Vector2)mouseWorldPos - playerRigidbody.position).normalized;
+    }
 
 
     //实时更新移速
@@ -236,12 +243,12 @@ public class PlayerMovementController : MonoBehaviour
 
     public void StartUltimateDash(){
         isUltimateDashing = true;
+        playerDirection = mouseDirection;
     }
 
 
     private void UltimateDashing(){
         if(isSpacedLock == false){
-            print(isSpacedLock);
             if(isUltimateDashing == true && Input.GetKey(KeyCode.Space)){
                 if(moveSpeed <= maxDashSpeed){
                     extraSpeed += increaseSpeedPerSec * Time.fixedDeltaTime;
@@ -253,9 +260,7 @@ public class PlayerMovementController : MonoBehaviour
                         Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
                         Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
                     );
-                    dashDirection = inputDirection.magnitude > 0.1f 
-                        ? inputDirection.normalized 
-                        : playerDirection;
+                    dashDirection = playerDirection;
                     directionLock = true;
                 }
                 backwardJumpTimer = maxBackwardJumpTime;
@@ -508,7 +513,7 @@ public class PlayerMovementController : MonoBehaviour
     }
 
 
-    // ✅ 新增：用于 PerfectAttack 恢复移动
+    //用于 PerfectAttack 恢复移动
     public void ForceMoveInDirection(Vector2 inputDirection)
     {
         if (inputDirection.magnitude > 0.1f)
