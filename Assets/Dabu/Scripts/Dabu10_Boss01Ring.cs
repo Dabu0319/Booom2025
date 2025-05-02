@@ -62,7 +62,7 @@ public class Dabu10_Boss01Ring : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            if (other.GetComponent<player_death>())
+            if (other.GetComponent<player_death>() && !other.GetComponent<player_death>().isDead)
             {
                 other.GetComponent<player_death>().Die();
             }
