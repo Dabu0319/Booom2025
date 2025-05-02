@@ -99,10 +99,10 @@ namespace TangKK
         {
             if (Time.timeScale == 0f)
             {
-                if (boxCollider != null)
-                {
-                    boxCollider.enabled = false;
-                }
+                // if (boxCollider != null)
+                // {
+                //     boxCollider.enabled = false;
+                // }
 
                 transform.position = frozenPosition;
             }

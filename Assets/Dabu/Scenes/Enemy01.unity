@@ -997,6 +997,11 @@ MonoBehaviour:
   moveSpeed: 10
   recoverDuration: 5
   rotationSpeed: 45
+  currentState: 0
+  currentPhase: 0
+  rings: []
+  core: {fileID: 0}
+  currentRingAlignedAngle: 0
 --- !u!4 &317040298
 Transform:
   m_ObjectHideFlags: 0
@@ -1898,7 +1903,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -5356574185940491189, guid: 7c06f1d82ba6c2e4e95b3ffe38955d30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -3183,7 +3188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laserPrefab: {fileID: 7931961064874307993, guid: 2ca20bb0bd3af224995202cf076d5e96, type: 3}
-  rotateDuration: 1
+  laserDuration: 2
   testFire: 0
 --- !u!1 &1927092007
 GameObject:
