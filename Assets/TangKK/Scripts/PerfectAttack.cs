@@ -60,9 +60,9 @@ namespace TangKK
         private void HandleInputDuringFreeze()
         {
             Vector2 inputDir = new Vector2(
-                Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
-                Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
-            ).normalized;
+                Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
+                Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
+            );
 
             if (inputDir != Vector2.zero)
             {
@@ -75,7 +75,7 @@ namespace TangKK
 
             if (!hasTriggeredRecovery)
             {
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetButton("Jump"))
                 {
                     pressSpaceTimer += Time.unscaledDeltaTime;
 
@@ -87,7 +87,7 @@ namespace TangKK
                     }
                 }
 
-                if (Input.GetKeyUp(KeyCode.Space))
+                if (Input.GetButtonUp("Jump"))
                 {
                     hasTriggeredRecovery = true;
                     ResumeTime(true, pressSpaceTimer);

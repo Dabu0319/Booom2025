@@ -1,30 +1,45 @@
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class Dabu10_Boss01Core : MonoBehaviour
 {
     private bool isFiring = false;
     private float fireTimer = 0f;
 
-    public GameObject laserPrefab;
-    private GameObject activeLaser;
+    private LineRenderer laserLine;
+    private Vector3 fireDirection;
 
     [Header("Skill Settings")]
-    public float laserDuration = 2f; // 激光持续时间（不旋转）
+    public float laserDuration = 2f; // 激光持续时间
+    public float maxLaserDistance = 20f;
+    public LayerMask blockLayer;
 
     [Header("Test Fire Button")]
     public bool testFire = false;
+    
+    
+    private float alignedAngleLocal;
+
+    void Start()
+    {
+        laserLine = GetComponent<LineRenderer>();
+        laserLine.enabled = false;
+        laserLine.positionCount = 2;
+    }
 
     void Update()
     {
         if (testFire)
         {
             testFire = false;
-            // 手动测试角度，例如：FireSkill(45f);
+            FireSkill(45f); // 示例角度
         }
 
         if (isFiring)
         {
             fireTimer -= Time.deltaTime;
+            UpdateLaser();
+
             if (fireTimer <= 0f)
             {
                 EndSkill();
@@ -32,36 +47,40 @@ public class Dabu10_Boss01Core : MonoBehaviour
         }
     }
 
-    public void FireSkill(float ringLocalAngleZ)
+    public void FireSkill(float alignedAngleLocalInput)
     {
-        if (isFiring) return;
-
         isFiring = true;
         fireTimer = laserDuration;
 
-        // 正确角度 = Ring 的本地角度 + 修正 -90（因为激光默认朝右，Ring默认朝下）
-        float finalAngle = -90f + ringLocalAngleZ;
-        Quaternion laserRotation = Quaternion.Euler(0, 0, finalAngle);
+        alignedAngleLocal = alignedAngleLocalInput;
 
-        activeLaser = Instantiate(laserPrefab, transform.position, laserRotation);
-
-        // 抵消 parent 缩放
-        Vector3 parentScale = transform.lossyScale;
-        Vector3 inverseScale = new Vector3(
-            1f / parentScale.x,
-            1f / parentScale.y,
-            1f / parentScale.z
-        );
-
-        activeLaser.transform.SetParent(transform, worldPositionStays: true);
-        activeLaser.transform.localScale = inverseScale;
+        laserLine.enabled = true;
+        UpdateLaser(); // 可选：第一帧就画出来
     }
+    private void UpdateLaser()
+    {
+        Vector3 start = transform.position;
+
+        // Ring 默认开口朝下 → Vector2.down 是基准方向
+        Quaternion totalRotation = transform.rotation * Quaternion.Euler(0, 0, alignedAngleLocal);
+        fireDirection = totalRotation * Vector2.down;
+
+        Vector3 end = start + (Vector3)(fireDirection * maxLaserDistance);
+
+        RaycastHit2D hit = Physics2D.Raycast(start, fireDirection, maxLaserDistance, blockLayer);
+        if (hit.collider != null)
+        {
+            end = hit.point;
+        }
+
+        laserLine.SetPosition(0, start);
+        laserLine.SetPosition(1, end);
+    }
+
 
     private void EndSkill()
     {
         isFiring = false;
-
-        if (activeLaser != null)
-            Destroy(activeLaser);
+        laserLine.enabled = false;
     }
 }

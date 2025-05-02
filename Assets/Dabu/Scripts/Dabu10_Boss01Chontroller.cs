@@ -53,9 +53,9 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         if (currentPhase == BossPhase.Phase2) return;
         if (rings == null || rings.Length != 3) return;
 
-        float angle0 = RoundAngle(rings[0].transform.eulerAngles.z);
-        float angle1 = RoundAngle(rings[1].transform.eulerAngles.z);
-        float angle2 = RoundAngle(rings[2].transform.eulerAngles.z);
+        float angle0 = RoundAngle(rings[0].transform.localEulerAngles.z);
+        float angle1 = RoundAngle(rings[1].transform.localEulerAngles.z);
+        float angle2 = RoundAngle(rings[2].transform.localEulerAngles.z);
 
         float delta01 = Mathf.Abs(Mathf.DeltaAngle(angle0, angle1));
         float delta02 = Mathf.Abs(Mathf.DeltaAngle(angle0, angle2));
@@ -63,7 +63,7 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         Debug.Log($"[Phase2检测] 角度: {angle0}, {angle1}, {angle2}");
         Debug.Log($"[差值] Δ01: {delta01}, Δ02: {delta02}");
 
-        float tolerance = 1f; // 仍保留容差
+        float tolerance = 3f; // 仍保留容差
 
         if (delta01 < tolerance && delta02 < tolerance)
         {
