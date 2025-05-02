@@ -1,3 +1,5 @@
+using System;
+using TangKK;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +14,10 @@ public class player_death : MonoBehaviour
     private bool isDead = false; // 防止多次触发死亡
 
 
+    private void Start()
+    {
+        movementController = playerCharacter.GetComponentInParent<PlayerMovementController>();
+    }
     /*
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -41,6 +47,17 @@ public class player_death : MonoBehaviour
         }
         movementController.SetIsDead(true);
         isDead = true;
+        GetComponent<PlayerAnimatorManager>().isDie = true;
+        
+        Rigidbody2D parentRb = GetComponentInParent<Rigidbody2D>();
+        if (parentRb != null)
+        {
+            parentRb.linearVelocity = Vector2.zero;
+            parentRb.angularVelocity = 0f;
+            parentRb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+        
+        
         // 延迟后重置场景
         Invoke("ResetScene", resetDelay);
     }
