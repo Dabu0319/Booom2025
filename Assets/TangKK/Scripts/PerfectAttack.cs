@@ -60,9 +60,9 @@ namespace TangKK
         private void HandleInputDuringFreeze()
         {
             Vector2 inputDir = new Vector2(
-                Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
-                Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
-            );
+                Input.GetAxisRaw("Horizontal"),
+                Input.GetAxisRaw("Vertical")
+            ).normalized;
 
             if (inputDir != Vector2.zero)
             {

@@ -137,9 +137,9 @@ public class PlayerMovementController : MonoBehaviour
 
         // 获取WASD输入
         Vector2 inputDirection = new Vector2(
-            Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
-            Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
-        );
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+        ).normalized;
 
         if (inputDirection.magnitude > 0.1f)
         {
@@ -193,9 +193,9 @@ public class PlayerMovementController : MonoBehaviour
         dashTimer = 0f;
         
         Vector2 inputDirection = new Vector2(
-            Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
-            Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
-        );
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+        ).normalized;
 
 
 
@@ -261,9 +261,9 @@ public class PlayerMovementController : MonoBehaviour
                 if(directionLock == false){
                     // 确定冲刺方向（优先使用当前输入方向，若无输入则使用当前面向方向）
                     Vector2 inputDirection = new Vector2(
-                        Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
-                        Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
-                    );
+                        Input.GetAxisRaw("Horizontal"),
+                        Input.GetAxisRaw("Vertical")
+                    ).normalized;
                     if(isMouseControl){
                         dashDirection = playerDirection;
                     }else{
@@ -501,10 +501,9 @@ public class PlayerMovementController : MonoBehaviour
     directionLock = false;
 
     Vector2 inputDirection = new Vector2(
-        Input.GetAxisRaw("Horizontal"), // 键盘AD + 摇杆X
-        Input.GetAxisRaw("Vertical")    // 键盘WS + 摇杆Y
-    );
-
+        Input.GetAxisRaw("Horizontal"),
+        Input.GetAxisRaw("Vertical")
+    ).normalized;
     dashDirection = inputDirection.magnitude > 0.1f ? inputDirection.normalized : playerDirection;
     playerRigidbody.linearVelocity = Vector2.zero;
 
