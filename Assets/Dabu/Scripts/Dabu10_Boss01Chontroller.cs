@@ -34,6 +34,11 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     public Dabu10_Boss01Ring[] rings; 
     public Dabu10_Boss01Core core; 
     public float currentRingAlignedAngle = 0f;
+    
+    
+    private float stuckCheckTimer = 0f;
+    private const float stuckThreshold = 0.2f; // 低于这个速度可能被卡住
+    private const float stuckCheckInterval = 1f; // 每1秒检查一次
 
     void Start()
     {
@@ -103,6 +108,28 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         {
             SwitchToPhase2();
         }
+        
+        StuckCheckUpdate();
+    }
+    
+    private void StuckCheckUpdate()
+    {
+        if (currentState != BossState.Dash) return;
+
+        stuckCheckTimer += Time.deltaTime;
+
+        if (stuckCheckTimer >= stuckCheckInterval)
+        {
+            stuckCheckTimer = 0f;
+
+            float speed = rb.linearVelocity.magnitude;
+
+            if (speed < stuckThreshold)
+            {
+                Debug.LogWarning("⚠️ Boss 可能卡住，重新进入 Dash");
+                EnterDash(); // 重启冲刺逻辑
+            }
+        }
     }
     
     
@@ -122,7 +149,7 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Enemy") )
+        if (collision.collider.CompareTag("Wall") )
         {
             Vector2 normal = collision.contacts[0].normal;
             Vector2 reflectedDirection = Vector2.Reflect(moveDirection, normal).normalized;

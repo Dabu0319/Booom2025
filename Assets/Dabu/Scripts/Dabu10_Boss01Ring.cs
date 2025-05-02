@@ -58,5 +58,19 @@ public class Dabu10_Boss01Ring : MonoBehaviour
                 Pause(2f);
             }
         }
+
+
+        if (other.CompareTag("Player"))
+        {
+            if (other.GetComponent<player_death>())
+            {
+                other.GetComponent<player_death>().Die();
+            }
+            else
+            {
+                // 处理玩家死亡逻辑
+                Debug.Log("Player has no death script");
+            }
+        }
     }
 }
