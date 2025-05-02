@@ -40,6 +40,8 @@ public class PlayerMovementController : MonoBehaviour
     //人物转身速度
     [SerializeField] private float turnSpeed = 10f;
 
+    public bool isMouseControl = false;
+
 
     
     // 运行时状态
@@ -243,7 +245,10 @@ public class PlayerMovementController : MonoBehaviour
 
     public void StartUltimateDash(){
         isUltimateDashing = true;
-        playerDirection = mouseDirection;
+        if(isMouseControl){
+            playerDirection = mouseDirection;
+        }
+
     }
 
 
@@ -260,7 +265,14 @@ public class PlayerMovementController : MonoBehaviour
                         Input.GetKey(KeyCode.D) ? 1f : Input.GetKey(KeyCode.A) ? -1f : 0,
                         Input.GetKey(KeyCode.W) ? 1f : Input.GetKey(KeyCode.S) ? -1f : 0
                     );
-                    dashDirection = playerDirection;
+                    if(isMouseControl){
+                        dashDirection = playerDirection;
+                    }else{
+                        dashDirection = inputDirection.magnitude > 0.1f 
+                        ? inputDirection.normalized 
+                        : playerDirection;
+                    }
+                    
                     directionLock = true;
                 }
                 backwardJumpTimer = maxBackwardJumpTime;
@@ -325,7 +337,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if(isBackwardJump && backwardJumpTimer > 0){
             backwardJumpTimer -= Time.fixedDeltaTime;
-            player.transform.position -= (Vector3)(playerDirection * 0.2f);
+            player.transform.position -= (Vector3)(playerDirection * 0.5f);
             print(playerDirection);
         }
         if(isBackwardJump && backwardJumpTimer <= 0){
