@@ -19,6 +19,9 @@ namespace TangKK
         //死亡bool
         public bool isDie = false;
 
+
+
+
         [Header("旋转控制")]
         [SerializeField] private float turnSpeed = 10f;
 
