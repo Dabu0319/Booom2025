@@ -1,25 +1,28 @@
 using UnityEngine;
 using shark;
+using System.Collections;
 
 namespace TangKK
 {
     public class AttackManager : MonoBehaviour
     {
-        public bool hasAttackHit = false; // 全局攻击成功标记
+        public bool hasAttackHit = false;
 
         private PlayerMovementController playerMovement;
-        private PlayerAnimatorManager playerAnimatorManager; // 🔥新增：控制canAttack
+        private PlayerAnimatorManager playerAnimatorManager;
+
+        private PerfectAttack  perfectAttack;
+
+        [Header("攻击判定相关")]
+        [SerializeField] private Collider2D attackCollider;
+
+        public bool canTriggerPerfectAttack = true;
 
         private void Awake()
         {
             playerMovement = GetComponentInParent<PlayerMovementController>();
             playerAnimatorManager = GetComponentInParent<PlayerAnimatorManager>();
 
-            if (playerMovement == null)
-                Debug.LogError("AttackManager: 找不到 PlayerMovementController，请确认挂载正确！");
-            
-            if (playerAnimatorManager == null)
-                Debug.LogError("AttackManager: 找不到 PlayerAnimatorManager，请确认挂载正确！");
         }
 
         private void Update()
@@ -28,12 +31,11 @@ namespace TangKK
 
             bool dashState = playerMovement.GetisStartAttackRecory();
 
-            // 🔥如果Dash状态不是3（攻击状态），就可以恢复攻击
-            if (dashState == false)
+            if (!dashState)
             {
                 if (!playerAnimatorManager.canAttack)
                 {
-                    playerAnimatorManager.ResetAttack(); // 调用恢复攻击的方法
+                    playerAnimatorManager.ResetAttack();
                 }
             }
         }
@@ -46,6 +48,34 @@ namespace TangKK
         public void SetAttackHit()
         {
             hasAttackHit = true;
+        }
+
+        /// <summary>
+        /// 🔥 外部调用，延迟恢复攻击判定逻辑
+        /// </summary>
+        public void TriggerPerfectAttackRecovery(float delay = 0.5f)
+        {
+            Debug.Log($"[AttackManager] 接收到恢复攻击请求，延迟 {delay} 秒");
+            StartCoroutine(DelayedEnableAttackLogic(delay));
+        }
+
+        private IEnumerator DelayedEnableAttackLogic(float delay)
+        {
+            Debug.Log($"[AttackManager] 开始等待 {delay} 秒");
+            yield return new WaitForSecondsRealtime(delay);
+            
+            if (attackCollider != null)
+            {
+                attackCollider.enabled = true;
+                Debug.Log("[AttackManager] 攻击 Collider 恢复成功 ✅");
+            }
+            else
+            {
+                Debug.LogWarning("[AttackManager] Collider 为 null ❌");
+            }
+
+            canTriggerPerfectAttack = true;
+            Debug.Log("[AttackManager] 攻击判定恢复 ✅");
         }
     }
 }

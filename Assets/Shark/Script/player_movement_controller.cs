@@ -320,7 +320,7 @@ public class PlayerMovementController : MonoBehaviour
 
         if(isBackwardJump && backwardJumpTimer > 0){
             backwardJumpTimer -= Time.fixedDeltaTime;
-            player.transform.position -= (Vector3)(playerDirection * 0.5f);
+            player.transform.position -= (Vector3)(playerDirection * 0.2f);
             print(playerDirection);
         }
         if(isBackwardJump && backwardJumpTimer <= 0){
@@ -517,6 +517,12 @@ public class PlayerMovementController : MonoBehaviour
             SetDashDirection(inputDirection);
             playerRigidbody.linearVelocity = inputDirection.normalized * (baseSpeed + extraSpeed);
         }
+    }
+
+
+    public bool GetisBackJump()
+    {
+        return isBackwardJump;
     }
 
 

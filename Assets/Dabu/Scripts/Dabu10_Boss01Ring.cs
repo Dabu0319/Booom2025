@@ -10,6 +10,8 @@ public class Dabu10_Boss01Ring : MonoBehaviour
     private Vector3 lastPosition;
 
     private Transform bossRoot;
+    
+    
 
     void Start()
     {
@@ -53,7 +55,11 @@ public class Dabu10_Boss01Ring : MonoBehaviour
     {
         if (other.CompareTag("Weapon") && !isPaused)
         {
-            Pause(2f); // 举例：暂停2秒
+            var dashState = other.transform.root.GetComponent<PlayerMovementController>().GetDashState();
+            if (dashState == 2 || dashState == 3)
+            {
+                Pause(2f);
+            }
         }
     }
 }
