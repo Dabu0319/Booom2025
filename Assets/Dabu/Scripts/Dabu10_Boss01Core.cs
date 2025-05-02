@@ -16,11 +16,10 @@ public class Dabu10_Boss01Core : MonoBehaviour
 
     void Update()
     {
-        // 测试按钮触发
         if (testFire)
         {
             testFire = false;
-            //FireSkill();
+            // 手动测试角度，例如：FireSkill(45f);
         }
 
         if (isFiring)
@@ -33,19 +32,20 @@ public class Dabu10_Boss01Core : MonoBehaviour
         }
     }
 
-    public void FireSkill(float ringAngleZ)
+    public void FireSkill(float ringLocalAngleZ)
     {
         if (isFiring) return;
 
         isFiring = true;
         fireTimer = laserDuration;
 
-        // Ring视觉开口为 z，Laser默认向右 ⇒ 修正 -90°
-        float finalAngle = ringAngleZ - 90f;
+        // 正确角度 = Ring 的本地角度 + 修正 -90（因为激光默认朝右，Ring默认朝下）
+        float finalAngle = -90f + ringLocalAngleZ;
         Quaternion laserRotation = Quaternion.Euler(0, 0, finalAngle);
 
         activeLaser = Instantiate(laserPrefab, transform.position, laserRotation);
 
+        // 抵消 parent 缩放
         Vector3 parentScale = transform.lossyScale;
         Vector3 inverseScale = new Vector3(
             1f / parentScale.x,
@@ -56,6 +56,7 @@ public class Dabu10_Boss01Core : MonoBehaviour
         activeLaser.transform.SetParent(transform, worldPositionStays: true);
         activeLaser.transform.localScale = inverseScale;
     }
+
     private void EndSkill()
     {
         isFiring = false;

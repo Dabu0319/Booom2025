@@ -1,69 +1,53 @@
 using UnityEngine;
 
-// Boss01Ring.cs
 public class Dabu10_Boss01Ring : MonoBehaviour
 {
     public bool isPaused = false;
-    public float defaultPauseTime = 1f; // 默认暂停时间
-    private float pauseTimer;
-    private Quaternion lastRotation;
-    private Vector3 lastPosition;
+    public float defaultPauseTime = 1f;
+    public float bossRotateSpeed = 45f; // 每秒转角度（和 Boss 一致）
 
-    private Transform bossRoot;
-    
-    
+    private float pauseTimer;
     private Dabu10_Boss01Controller bossController;
     
-    
+    public bool testPause = false;
 
     void Start()
     {
-        bossRoot = transform.parent;
-        lastRotation = transform.rotation;
-        lastPosition = transform.position;
-        pauseTimer = defaultPauseTime;
-
         bossController = GetComponentInParent<Dabu10_Boss01Controller>();
     }
 
     void Update()
     {
+        if (testPause)
+        {
+            testPause = false;
+            Pause(2f);
+        }
+
         if (isPaused)
         {
-            // 保持自己位置和旋转角度不变
-            //transform.position = lastPosition;
-            transform.rotation = lastRotation;
+            // 每秒反向旋转，抵消父物体
+            float delta = bossRotateSpeed * Time.deltaTime;
+            transform.Rotate(0, 0, delta, Space.Self); // ★ 本地反向转
 
             pauseTimer -= Time.deltaTime;
-            if (pauseTimer <= 0f && isPaused)
+            if (pauseTimer <= 0f)
             {
                 isPaused = false;
                 pauseTimer = defaultPauseTime;
-
                 bossController?.TryCheckPhase2();
                 Debug.Log("Check Phase 2");
             }
-
-
-        }
-        else
-        {
-            // 正常跟随父物体旋转
-            lastRotation = transform.rotation;
-            //lastPosition = transform.position;
         }
     }
 
     public void Pause(float duration)
     {
+        if (isPaused) return; // 防止重复触发
         isPaused = true;
         pauseTimer = duration;
-        
-        
-        
     }
 
-    // 检测被攻击
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Weapon") && !isPaused)
