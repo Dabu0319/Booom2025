@@ -1,4 +1,5 @@
 using System.Resources;
+using JetBrains.Annotations;
 using UnityEngine;
 
 
@@ -63,8 +64,9 @@ public class PlayerMovementController : MonoBehaviour
     private bool isPerfectAttack = false;
     private bool isSpacedLock = false;
     private bool directionLock = false;
-
+    private bool isDead = false;
     private bool forceUltimateDash = false;
+    
 
 
 
@@ -75,39 +77,45 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        mousePositionDirection();
-        if (forceUltimateDash)
-        {
-            forceUltimateDash = false;
-            StartUltimateDash();
+        if(isDead == false){
+            mousePositionDirection();
+            if (forceUltimateDash)
+            {
+                forceUltimateDash = false;
+                StartUltimateDash();
+            }
+            
+            HandleDashInput();
+            HandleUltimateDashInput();
         }
-        
-        HandleDashInput();
-        HandleUltimateDashInput();
+
         
     }
 
     private void FixedUpdate()
     {
+        if(isDead == false){
+            AttackRecovery();
+            BackwardJump();
 
-        AttackRecovery();
-        BackwardJump();
 
 
+            UpdateSpeed();
+            if (isDashing || isUltimateDashing || isStartAttackRecory || isBackwardJump)
+            {
+                UpdateDash();
+                UltimateDashing();
 
-        UpdateSpeed();
-        if (isDashing || isUltimateDashing || isStartAttackRecory || isBackwardJump)
-        {
-            UpdateDash();
-            UltimateDashing();
-
+            }
+            else
+            {
+                UpdateNormalMovement();
+            }
+            
+            UpdateTimers();
         }
-        else
-        {
-            UpdateNormalMovement();
-        }
-        
-        UpdateTimers();
+
+
     }
 
 
@@ -542,7 +550,9 @@ public class PlayerMovementController : MonoBehaviour
 
 
 
-
+    public void SetIsDead(bool isPlayerDead){
+        isDead = isPlayerDead;
+    }
 
 
 

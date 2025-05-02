@@ -5,6 +5,7 @@ public class player_death : MonoBehaviour
 {
     [Header("Reference")]
     [SerializeField] private GameObject playerCharacter;
+    [SerializeField] private PlayerMovementController movementController;
     
     [Header("重置设置")]
     [SerializeField] private float resetDelay = 1.5f; // 死亡后重置场景的延迟时间
@@ -38,6 +39,7 @@ public class player_death : MonoBehaviour
         if (DeathMarker2D.Instance != null){
             DeathMarker2D.Instance.RecordDeathPosition(playerCharacter.transform.position);
         }
+        movementController.SetIsDead(true);
         isDead = true;
         // 延迟后重置场景
         Invoke("ResetScene", resetDelay);
