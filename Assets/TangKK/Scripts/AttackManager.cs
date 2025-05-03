@@ -82,14 +82,14 @@ namespace TangKK
         private void OnTriggerEnter2D(Collider2D other)
         {
 
-            if (other.CompareTag("Enemy") ||  other.CompareTag("Wall") && playerMovement.GetDashState() == 2 )
+            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")) && playerMovement.GetDashState() == 2 )
             {
                     playerMovement.SetBackwardJumpState(true);
                     playerMovement.SetAttackRecoryState(true);
             }
 
 
-            if (other.CompareTag("Enemy") ||  other.CompareTag("Wall") && playerAnimatorManager.isAttacking == true  && spearColliderManager.phase1Triggered == true)
+            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")) && playerAnimatorManager.isAttacking == true  && spearColliderManager.phase1Triggered == true)
             {
 
                 if (playerAnimatorManager != null)
@@ -100,7 +100,7 @@ namespace TangKK
 
             }
 
-            if (other.CompareTag("Enemy") ||  other.CompareTag("Wall") && !perfectAttack.isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
+            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")) && !perfectAttack.isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
             {
                 Debug.Log("[PerfectAttack] 触发 FreezeTime");
                 perfectAttack.StartCoroutine(perfectAttack.FreezeTime());
