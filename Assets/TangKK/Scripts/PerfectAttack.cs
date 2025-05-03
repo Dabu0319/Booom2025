@@ -11,14 +11,15 @@ namespace TangKK
         [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private float speedPreserveRatio = 0.7f;
         [SerializeField] private PlayerAnimatorManager playerAnimatorManager;
+        private SpearColliderManager spearColliderManager;
+
 
         [Header("Collider Reference")]
-        [SerializeField] private Collider2D boxCollider;
 
         [Header("Manager")]
         [SerializeField] private AttackManager attackManager;
 
-        private bool isFreezing = false;
+        public bool isFreezing = false;
         private bool hasTriggeredRecovery = false;
 
         private Vector3 frozenPosition;
@@ -31,10 +32,7 @@ namespace TangKK
 
         private void Awake()
         {
-            if (boxCollider == null)
-            {
-                boxCollider = GetComponent<Collider2D>();
-            }
+            spearColliderManager = GetComponent<SpearColliderManager>();
 
             if (attackManager == null)
             {
@@ -99,16 +97,11 @@ namespace TangKK
         {
             if (Time.timeScale == 0f)
             {
-                // if (boxCollider != null)
-                // {
-                //     boxCollider.enabled = false;
-                // }
-
                 transform.position = frozenPosition;
             }
         }
 
-        private IEnumerator FreezeTime()
+        public IEnumerator FreezeTime()
         {
             Debug.Log("[PerfectAttack] FreezeTime 协程启动");
 
@@ -194,33 +187,15 @@ namespace TangKK
             attackManager?.TriggerPerfectAttackRecovery(0.5f);
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            Debug.Log($"[OnTriggerEnter2D] 检测到碰撞对象: {collision.name}");
+        // private void OnTriggerEnter2D(Collider2D collision)
+        // {
 
-            if (attackManager == null || !attackManager.canTriggerPerfectAttack)
-            {
-                Debug.Log("[PerfectAttack] 攻击判定不可用，忽略触发 ❌");
-                return;
-            }
+        //     if (collision.CompareTag("Enemy") && !isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
+        //     {
+        //         Debug.Log("[PerfectAttack] 触发 FreezeTime");
+        //         StartCoroutine(FreezeTime());
+        //     }
+        // }
 
-            if (collision.CompareTag("Enemy") && !isFreezing)
-            {
-                Debug.Log("[PerfectAttack] 触发 FreezeTime");
-                StartCoroutine(FreezeTime());
-            }
-        }
-
-        private void OnGUI()
-        {
-            if (!isFreezing) return;
-
-            GUI.Box(new Rect(Screen.width / 2 - 100, 20, 200, 25), "TIME FREEZE ACTIVE");
-            GUI.Label(new Rect(10, 100, 300, 20), $"方向: {lastInputDirection}");
-            GUI.Label(new Rect(10, 120, 300, 20), $"空格计时: {pressSpaceTimer:F2}s");
-            GUI.Label(new Rect(10, 140, 300, 20), $"时停计时: {freezeTimer:F2}s");
-            GUI.Label(new Rect(10, 160, 300, 20), $"hasTriggeredRecovery: {hasTriggeredRecovery}");
-            GUI.Label(new Rect(10, 180, 300, 20), $"极限冲刺时间: {playerMovementController.ultimateDashRequiremnetTimer:F2}s");
-        }
     }
 }

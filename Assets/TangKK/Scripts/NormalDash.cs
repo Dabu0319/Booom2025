@@ -17,22 +17,14 @@ namespace TangKK
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (playerMovement == null) return;
+        // private void OnTriggerEnter2D(Collider2D other)
+        // {
 
-            if (other.CompareTag("Enemy"))
-            {
-                int dashState = playerMovement.GetDashState();
-
-                if (dashState == 2)
-                {
-                    Debug.Log("在非0/3状态下撞到敌人，触发后跳！");
-
-                    playerMovement.SetBackwardJumpState(true);
-                    playerMovement.SetAttackRecoryState(true);
-                }
-            }
-        }
+        //     if (other.CompareTag("Enemy") && playerMovement.GetDashState() == 2 )
+        //     {
+        //             playerMovement.SetBackwardJumpState(true);
+        //             playerMovement.SetAttackRecoryState(true);
+        //         }
+        //     }
     }
 }

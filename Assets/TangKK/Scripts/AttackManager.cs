@@ -10,8 +10,9 @@ namespace TangKK
 
         private PlayerMovementController playerMovement;
         private PlayerAnimatorManager playerAnimatorManager;
-
+        private SpearColliderManager spearColliderManager;
         private PerfectAttack  perfectAttack;
+
 
         [Header("攻击判定相关")]
         [SerializeField] private Collider2D attackCollider;
@@ -20,20 +21,14 @@ namespace TangKK
 
         private void Awake()
         {
+            perfectAttack = GetComponent<PerfectAttack>();
+            spearColliderManager = GetComponent<SpearColliderManager>();
             playerMovement = GetComponentInParent<PlayerMovementController>();
             playerAnimatorManager = GetComponentInParent<PlayerAnimatorManager>();
-
-            if (playerMovement == null)
-                Debug.LogError("AttackManager: 找不到 PlayerMovementController，请确认挂载正确！");
-            
-            if (playerAnimatorManager == null)
-                Debug.LogError("AttackManager: 找不到 PlayerAnimatorManager，请确认挂载正确！");
         }
 
         private void Update()
         {
-            if (playerMovement == null || playerAnimatorManager == null) return;
-
             bool dashState = playerMovement.GetisStartAttackRecory();
 
             if (!dashState)
@@ -82,5 +77,58 @@ namespace TangKK
             canTriggerPerfectAttack = true;
             Debug.Log("[AttackManager] 攻击判定恢复 ✅");
         }
+
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+
+            if (other.CompareTag("Enemy") ||  other.CompareTag("Wall") && playerMovement.GetDashState() == 2 )
+            {
+                    playerMovement.SetBackwardJumpState(true);
+                    playerMovement.SetAttackRecoryState(true);
+            }
+
+
+            if (other.CompareTag("Enemy") ||  other.CompareTag("Wall") && playerAnimatorManager.isAttacking == true  && spearColliderManager.phase1Triggered == true)
+            {
+
+                if (playerAnimatorManager != null)
+                {
+                    playerAnimatorManager.canAttack = false; // 触发后禁止攻击
+                    playerMovement.SetBackwardJumpState(true); // 启动后跳
+                }
+
+            }
+
+            if (other.CompareTag("Enemy") ||  other.CompareTag("Wall") && !perfectAttack.isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
+            {
+                Debug.Log("[PerfectAttack] 触发 FreezeTime");
+                perfectAttack.StartCoroutine(perfectAttack.FreezeTime());
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

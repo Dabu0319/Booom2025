@@ -10,9 +10,10 @@ namespace TangKK
         private PlayerMovementController playerMovement;
         private Animator animator;
         private PlayerAnimatorManager playerAnimatorManager;
+        private SpearColliderManager spearColliderManager;
 
         void Start()
-        {
+        {   spearColliderManager = GetComponent<SpearColliderManager>();
             attackCollider = GetComponentInChildren<Collider2D>();
             playerMovement = GetComponentInParent<PlayerMovementController>();
             animator = GetComponentInParent<Animator>();
@@ -31,22 +32,19 @@ namespace TangKK
                 Debug.LogError("找不到 PlayerAnimatorManager！请检查父物体是否挂载了！");
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.CompareTag("Enemy"))
-            {
-                Debug.Log($"命中敌人，造成 {attackDamage} 点伤害！");
+        // private void OnTriggerEnter2D(Collider2D other)
+        // {
+        //     if (other.CompareTag("Enemy") && playerAnimatorManager.isAttacking == true  && spearColliderManager.phase1Triggered == true)
+        //     {
+        //         Debug.Log($"命中敌人，造成 {attackDamage} 点伤害！");
 
-                if (playerAnimatorManager != null)
-                {
-                    playerAnimatorManager.canAttack = false; // 触发后禁止攻击
-                    playerMovement.SetBackwardJumpState(true); // 启动后跳
-                }
+        //         if (playerAnimatorManager != null)
+        //         {
+        //             playerAnimatorManager.canAttack = false; // 触发后禁止攻击
+        //             playerMovement.SetBackwardJumpState(true); // 启动后跳
+        //         }
 
-                // ❌ 不再禁用 attackCollider
-                // if (attackCollider != null)
-                //     attackCollider.enabled = false;
-            }
-        }
+        //     }
+        // }
     }
 }
