@@ -3021,10 +3021,34 @@ MonoBehaviour:
   spearColliderObject: {fileID: 1599327471}
   characterTransform: {fileID: 635196847}
   angleOffset: -90
-  attackOffsetDistance: -0.4
+  attackOffsetDistance: -0.5
   defaultLocalPosition: {x: 0, y: 0, z: 0}
-  slideSpeed: 5
-  offsetDuration: 0.5
+  slideSpeed: 20
+  offsetDuration: 1
+  slideCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.70666504
+      value: 0.9943466
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   attackOffsetProgress: 0
   phase1Triggered: 0
   phase2Triggered: 0

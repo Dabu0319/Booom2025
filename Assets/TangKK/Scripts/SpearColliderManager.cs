@@ -22,11 +22,14 @@ namespace TangKK
         [Header("默认局部位置")]
         public Vector3 defaultLocalPosition = Vector3.zero;
 
-        [Header("滑动速度")]
+        [Header("滑动速度（影响平滑插值）")]
         public float slideSpeed = 10f;
 
         [Header("偏移持续时间（秒）")]
         public float offsetDuration = 0.5f;
+
+        [Header("自定义滑动曲线（用于非线性偏移）")]
+        public AnimationCurve slideCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         private float offsetTimer = 0f;
         private PlayerAnimatorManager playerAnimatorManager;
@@ -64,29 +67,30 @@ namespace TangKK
                 offsetTimer += Time.unscaledDeltaTime;
                 attackOffsetProgress = Mathf.Clamp01(offsetTimer / offsetDuration);
 
+                // ✅ 使用自定义曲线控制滑动进度
+                float easedProgress = slideCurve.Evaluate(attackOffsetProgress);
+
                 float angleZ = characterTransform.eulerAngles.z + angleOffset;
                 float angleRad = angleZ * Mathf.Deg2Rad;
 
                 Vector2 dir = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)).normalized;
-                float distance = attackOffsetDistance * attackOffsetProgress;
+                float distance = attackOffsetDistance * easedProgress;
                 Vector3 offset = new Vector3(dir.x, dir.y, 0f) * distance;
                 Vector3 worldTargetPos = transform.TransformPoint(defaultLocalPosition + offset);
                 targetLocalPosition = transform.InverseTransformPoint(worldTargetPos);
 
                 // ✅ 时间段判断（阶段触发控制）
-                if (!phase1Triggered && offsetTimer >= 0.1f && offsetTimer <= 0.3f)
+                if (!phase1Triggered && offsetTimer >= 0f && offsetTimer <= 0.5f)
                 {
                     phase1Triggered = true;
                     Debug.Log("➡ 进入第一阶段（0.1s）");
-                    // 可以触发特效、音效、状态切换等
                 }
 
-                if (!phase2Triggered && offsetTimer > 0.3f)
+                if (!phase2Triggered && offsetTimer > 0.5f)
                 {
                     phase2Triggered = true;
                     phase1Triggered = false;
                     Debug.Log("➡ 进入第二阶段（0.3s）");
-                    // 可以触发二段攻击、特效变化等
                 }
             }
             else
@@ -98,7 +102,7 @@ namespace TangKK
                 phase2Triggered = false;
             }
 
-            // ✅ 平滑移动
+            // ✅ 平滑移动（用于缓和突变）
             spearColliderObject.transform.localPosition = Vector3.Lerp(
                 spearColliderObject.transform.localPosition,
                 targetLocalPosition,
@@ -140,7 +144,5 @@ namespace TangKK
                 collider.enabled = false;
             }
         }
-
-
     }
 }
