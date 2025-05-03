@@ -104,7 +104,10 @@ public class Dabu10_Boss01Core : MonoBehaviour
     {
         if (other.CompareTag("Weapon") && GetComponentInParent<Dabu10_Boss01Controller>().currentPhase == Dabu10_Boss01Controller.BossPhase.Phase2)
         {
+            Dabu10_CameraShake.instance.ShakeCamera(5f, 0.2f);
             Dabu10_GameManager.instance.Success();
+            GetComponent<Animator>().enabled = true;
+            GetComponentInParent<Dabu10_Boss01Controller>().currentState = Dabu10_Boss01Controller.BossState.Idle;
         }
     }
 }

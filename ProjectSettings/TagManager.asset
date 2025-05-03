@@ -22,7 +22,7 @@ TagManager:
   - 
   - Block
   - Boss01
-  - 
+  - Confiner
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 381326807
     locked: 0
   m_RenderingLayers:
   - Default
