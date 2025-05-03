@@ -10,6 +10,9 @@ public class Dabu10_Boss01Ring : MonoBehaviour
     private Dabu10_Boss01Controller bossController;
     
     public bool testPause = false;
+    
+    
+    public bool debugNoDamage = false; // 调试用，是否无敌
 
     void Start()
     {
@@ -60,7 +63,7 @@ public class Dabu10_Boss01Ring : MonoBehaviour
         }
 
 
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !debugNoDamage)
         {
             if (other.GetComponent<player_death>() && !other.GetComponent<player_death>().isDead)
             {

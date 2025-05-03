@@ -71,7 +71,22 @@ public class Dabu10_Boss01Core : MonoBehaviour
         if (hit.collider != null)
         {
             end = hit.point;
+            
+            
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player1"))
+            {
+                if (hit.collider.GetComponent<player_death>() && !hit.collider.gameObject.GetComponent<player_death>().isDead)
+                {
+                    hit.collider.GetComponent<player_death>().Die();
+                }
+                else
+                {
+                    // 处理玩家死亡逻辑
+                    Debug.Log("Player has no death script");
+                }
+            }
         }
+        
 
         laserLine.SetPosition(0, start);
         laserLine.SetPosition(1, end);

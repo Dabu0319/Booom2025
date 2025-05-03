@@ -70,7 +70,7 @@ public class Dabu10_Boss01Controller : MonoBehaviour
         Debug.Log($"[Phase2检测] 角度: {angle0}, {angle1}, {angle2}");
         Debug.Log($"[差值] Δ01: {delta01}, Δ02: {delta02}");
 
-        float tolerance = 3f; // 仍保留容差
+        float tolerance = 10f; // 仍保留容差
 
         if (delta01 < tolerance && delta02 < tolerance)
         {
