@@ -11,7 +11,7 @@ public class player_death : MonoBehaviour
     
     [Header("重置设置")]
     [SerializeField] private float resetDelay = 1.5f; // 死亡后重置场景的延迟时间
-    private bool isDead = false; // 防止多次触发死亡
+    public bool isDead = false; // 防止多次触发死亡
 
 
     private void Start()
