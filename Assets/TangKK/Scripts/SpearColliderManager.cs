@@ -30,6 +30,7 @@ namespace TangKK
 
         private float offsetTimer = 0f;
         private PlayerAnimatorManager playerAnimatorManager;
+        private Collider2D collider;
 
         // ✅ 偏移进度（0 ~ 1）
         [Range(0f, 1f)]
@@ -41,6 +42,7 @@ namespace TangKK
 
         void Start()
         {
+            collider = GetComponent<Collider2D>();
             playerAnimatorManager = GetComponentInParent<PlayerAnimatorManager>();
 
             if (playerAnimatorManager == null)
@@ -104,6 +106,7 @@ namespace TangKK
             );
 
             NormalAttack();
+            HidCollider();
         }
 
         void OnDrawGizmos()
@@ -125,5 +128,19 @@ namespace TangKK
             if (playerAnimatorManager.isAttacking)
                 enableOffset = true;
         }
+
+        public void HidCollider()
+        {
+            if(playerAnimatorManager.isAttacking == true || playerAnimatorManager.isDash == true)
+            {
+                collider.enabled = true;
+            }
+            else
+            {
+                collider.enabled = false;
+            }
+        }
+
+
     }
 }
