@@ -38,8 +38,14 @@ public class Dabu10_Boss01Ring : MonoBehaviour
             {
                 isPaused = false;
                 pauseTimer = defaultPauseTime;
-                bossController?.TryCheckPhase2();
-                Debug.Log("Check Phase 2");
+
+                if (bossController.currentPhase == Dabu10_Boss01Controller.BossPhase.Phase1)
+                {
+                    bossController?.TryCheckPhase2();
+                    Debug.Log("Check Phase 2");
+                }
+
+
             }
         }
     }

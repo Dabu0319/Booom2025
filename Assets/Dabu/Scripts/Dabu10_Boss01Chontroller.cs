@@ -22,9 +22,9 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     public float rotationSpeed = 45f;
 
     [SerializeField]
-    private BossState currentState = BossState.Idle;
+    public BossState currentState = BossState.Idle;
     [SerializeField]
-    private BossPhase currentPhase = BossPhase.Phase1;
+    public BossPhase currentPhase = BossPhase.Phase1;
 
     private Rigidbody2D rb;
     private Vector2 moveDirection;

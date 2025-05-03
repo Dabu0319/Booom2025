@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -97,5 +98,13 @@ public class Dabu10_Boss01Core : MonoBehaviour
     {
         isFiring = false;
         laserLine.enabled = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Weapon") && GetComponentInParent<Dabu10_Boss01Controller>().currentPhase == Dabu10_Boss01Controller.BossPhase.Phase2)
+        {
+            Dabu10_GameManager.instance.Success();
+        }
     }
 }
