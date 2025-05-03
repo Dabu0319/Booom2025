@@ -151,6 +151,8 @@ public class Dabu10_Boss01Controller : MonoBehaviour
     {
         if (collision.collider.CompareTag("Wall") )
         {
+            Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
+            
             Vector2 normal = collision.contacts[0].normal;
             Vector2 reflectedDirection = Vector2.Reflect(moveDirection, normal).normalized;
 
