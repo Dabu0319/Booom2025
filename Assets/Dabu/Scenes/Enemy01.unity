@@ -1485,7 +1485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b73aeb799e0c1d4d8bdc7b613cdf7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathMarkerPrefab: {fileID: 4400300009714689397, guid: 4641858b06020bf4b8e5448828d5c945, type: 3}
+  deathMarkerPrefab: {fileID: 4400300009714689397, guid: 6799582ecef184745a56ab090897b9f2, type: 3}
   hasPosition: 0
 --- !u!4 &728177103
 Transform:
@@ -3416,6 +3416,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -3079326535514611068, guid: 1291c926249da204fb252ea9c2935132, type: 3}
+    - target: {fileID: 983455220215163270, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: movementController
+      value: 
+      objectReference: {fileID: 635196846}
     - target: {fileID: 3068573301307625138, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.48452067
