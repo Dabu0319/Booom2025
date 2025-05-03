@@ -49,7 +49,7 @@ public class PlayerMovementController : MonoBehaviour
     private float moveSpeed;
     private Vector2 currentVelocity;
     private Vector2 dashDirection;
-    private Vector2 playerDirection = Vector2.right;
+    private Vector2 playerDirection = Vector2.up;
     private Vector3 mouseWorldPos;
     private Vector2 mouseDirection;
     private float dashTimer = 0f;
