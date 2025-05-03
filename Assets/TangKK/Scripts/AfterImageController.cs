@@ -19,8 +19,11 @@ public class AfterImageController : MonoBehaviour
     private SpriteRenderer playerRenderer;
     private Sprite lastSprite;
 
+    private PlayerAnimatorManager playerAnimatorManager;
+
     void Start()
     {
+        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         playerRenderer = GetComponent<SpriteRenderer>();
         if (playerRenderer == null)
         {
@@ -30,6 +33,7 @@ public class AfterImageController : MonoBehaviour
 
     void Update()
     {
+        OpenAfterimage();   
         if (!enableAfterImage || afterImagePrefab == null || playerRenderer == null)
             return;
 
@@ -41,6 +45,7 @@ public class AfterImageController : MonoBehaviour
             SpawnAfterImage(currentSprite);
             lastSprite = currentSprite;
         }
+  
     }
 
     void SpawnAfterImage(Sprite sprite)
@@ -87,5 +92,18 @@ public class AfterImageController : MonoBehaviour
 
         Destroy(sr.gameObject);
     }
+
+
+    public void OpenAfterimage()
+    {
+        if(playerAnimatorManager.isDash == true)
+        {
+            enableAfterImage = true;
+        }else
+        {
+            enableAfterImage = false;   
+        }
+    }
+
 }
 }
