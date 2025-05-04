@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 public class URPTimeStopEffect : MonoBehaviour
 {
-    [SerializeField] private float timeScale = 1f;
+    [SerializeField] private float timeScale = 0.05f;
     
 
     // URP组件
@@ -50,9 +50,9 @@ public class URPTimeStopEffect : MonoBehaviour
     private void Update()
     {
         if(isActive && timer < 1f){
-            timer += 1/timeScale*Time.deltaTime;
+            timer += 10 *Time.deltaTime;
         }else if(isActive == false && timer > 0f){
-            timer -= 1/timeScale*Time.deltaTime;
+            timer -= 10 *Time.deltaTime;
         }
         currentIntensity = timer;
         print(timer);
