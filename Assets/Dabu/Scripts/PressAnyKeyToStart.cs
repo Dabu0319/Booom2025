@@ -2,10 +2,12 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PressAnyKeyController : MonoBehaviour
 {
     public TextMeshProUGUI pressText;
+    public Image title;
 
     private bool hasPressedKey = false;
     private Tween blinkTween;
@@ -38,6 +40,7 @@ public class PressAnyKeyController : MonoBehaviour
                 DOVirtual.DelayedCall(0.5f, () =>
                 {
                     pressText.DOFade(0f, 0.5f);
+                    title.DOFade(0f, 0.5f);
                         
                     // 调用事件
                     onStart?.Invoke();
