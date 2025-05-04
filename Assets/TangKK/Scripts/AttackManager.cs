@@ -144,6 +144,8 @@ namespace TangKK
 
             if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall") || other.CompareTag("Scarecrow")) && !perfectAttack.isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
             {
+
+
                 if(other.CompareTag("Wall"))
                 {
                     AudioManager.instance.PlaySFX("Boss Attack");    
@@ -164,6 +166,7 @@ namespace TangKK
                 Debug.Log("[PerfectAttack] 触发 FreezeTime");
                 Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
                 perfectAttack.StartCoroutine(perfectAttack.FreezeTime());
+
             }
         }
 
