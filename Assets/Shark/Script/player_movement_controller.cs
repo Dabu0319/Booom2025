@@ -1,5 +1,9 @@
+
 using NUnit.Framework.Internal;
 using Unity.VisualScripting;
+
+using UnityEditor.Rendering.LookDev;
+
 using UnityEngine;
 
 
@@ -70,6 +74,10 @@ public class PlayerMovementController : MonoBehaviour
 
 
 
+    //tutorial check
+    public bool isMoveCheck = false;
+    public bool isDashCheck = false;
+    public bool isUltimateDashCheck = false;
 
 
 
@@ -148,9 +156,20 @@ public class PlayerMovementController : MonoBehaviour
             Input.GetAxisRaw("Vertical")
         ).normalized;
 
+
         if (inputDirection.magnitude > 0.1f)
         {
             playerDirection = inputDirection;
+            
+            if (!isMoveCheck)
+            {
+                TutorialManager.Instance.TryAdvance(0);
+                Debug.Log("移动检测");
+                isMoveCheck = true;
+            }
+
+
+
         }
 
         // 计算目标速度
@@ -187,6 +206,12 @@ public class PlayerMovementController : MonoBehaviour
             if (Input.GetButtonUp("Jump") && isUltimateDashing == false)
             {
                 StartDash();
+                if (!isDashCheck&& isMoveCheck)
+                {
+                    TutorialManager.Instance.TryAdvance(1);
+                    isDashCheck = true;
+                }
+                
                 pressSpaceTimer = 0;
             }
         }    
@@ -245,7 +270,7 @@ public class PlayerMovementController : MonoBehaviour
         isDashing = false;
         cooldownTimer = dashCooldown;
         playerRigidbody.linearVelocity = Vector2.zero;
-        print("end D");
+        //print("end D");
     }
 
 
@@ -253,6 +278,16 @@ public class PlayerMovementController : MonoBehaviour
         isUltimateDashing = true;
         if(isMouseControl){
             playerDirection = mouseDirection;
+        }
+
+
+        if (!isUltimateDashCheck && isDashCheck)
+        {
+            TutorialManager.Instance.TryAdvance(2);
+            Debug.Log("极限冲刺检测");
+            
+            TutorialManager.Instance.ShowScarecrow();
+            isUltimateDashCheck = true;
         }
 
     }
@@ -292,7 +327,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleUltimateDashInput(){
         if(isUltimateDashing == true){
-            print("1");
+            //print("1");
             if(Input.GetButtonUp("Jump")){
                 isStartAttackRecory = true;
                 if(isPerfectAttack == false){

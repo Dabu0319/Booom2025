@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -10,10 +11,13 @@ public class TutorialManager : MonoBehaviour
     public Transform player;           // 玩家 transform
     public Vector3 uiOffset = new Vector3(0, 2f, 0); // UI 偏移在角色头顶
 
-    private int currentStep = 0;
-    private GameObject currentUI;
+    public int currentStep = 0;
+    //private GameObject currentUI;
 
     public static TutorialManager Instance { get; private set; }
+
+    public GameObject Scarecrow;
+
 
     private void Awake()
     {
@@ -26,42 +30,43 @@ public class TutorialManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    public void ShowScarecrow()
     {
-        ShowStep(currentStep);
+        Scarecrow.SetActive(true);
+    }
+    
+    public void ShowStepWithDelay(int index, float delay)
+    {
+       
+        StartCoroutine(ShowStepWithDelayCoroutine(index, delay));
+        
+    }
+    
+    public IEnumerator ShowStepWithDelayCoroutine(int index, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ShowStep(index);
     }
 
-    void Update()
+    public void ShowStep(int index)
     {
-        if (currentStep >= tutorialSteps.Length) return;
+        
 
-        // UI 跟随玩家位置
-        if (currentUI != null && player != null)
-        {
-            Vector3 worldPos = player.position + uiOffset;
-            currentUI.transform.position = Camera.main.WorldToScreenPoint(worldPos);
-        }
-    }
-
-    void ShowStep(int index)
-    {
-        if (index >= tutorialSteps.Length) return;
-
-        currentUI = Instantiate(tutorialSteps[index], transform); // 创建 UI
+        //instantiate game prefab
+        GameObject stepUI = Instantiate(tutorialSteps[index], player.position + uiOffset, Quaternion.identity);
     }
 
     public void TryAdvance(int stepId)
     {
         if (stepId != currentStep) return; // 只有顺序正确才允许前进
 
-        if (currentUI != null)
-            Destroy(currentUI);
+        Debug.Log($"当前步骤：{currentStep}，尝试前进到步骤：{stepId}");
 
         currentStep++;
 
         if (currentStep < 5)
         {
-            ShowStep(currentStep);
+            ShowStepWithDelay(currentStep,2f);
         }
         else
         {
