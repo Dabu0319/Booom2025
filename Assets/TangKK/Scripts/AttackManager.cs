@@ -14,9 +14,6 @@ namespace TangKK
         private PerfectAttack  perfectAttack;
 
 
-        [Header("攻击判定相关")]
-        [SerializeField] private Collider2D attackCollider;
-
         public bool canTriggerPerfectAttack = true;
 
         private void Awake()
@@ -64,16 +61,6 @@ namespace TangKK
         {
             Debug.Log($"[AttackManager] 开始等待 {delay} 秒");
             yield return new WaitForSecondsRealtime(delay);
-            
-            if (attackCollider != null)
-            {
-                attackCollider.enabled = true;
-                Debug.Log("[AttackManager] 攻击 Collider 恢复成功 ✅");
-            }
-            else
-            {
-                Debug.LogWarning("[AttackManager] Collider 为 null ❌");
-            }
 
             canTriggerPerfectAttack = true;
             Debug.Log("[AttackManager] 攻击判定恢复 ✅");
