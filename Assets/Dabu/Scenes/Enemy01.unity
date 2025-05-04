@@ -931,7 +931,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -2819,6 +2819,74 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1433573915
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 243657508738335964, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_Name
+      value: PostProcessVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.0677056
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.961279
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.1382932
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 741888686523575933, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+--- !u!114 &1450151423 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 962553857100109810, guid: 29df89f9672a00547b6144f73e7c2d10, type: 3}
+  m_PrefabInstance: {fileID: 1433573915}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8826dac2c9778041ac5773e9ba78d2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1476734291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3128,7 +3196,7 @@ MonoBehaviour:
   playerMovementController: {fileID: 635196846}
   speedPreserveRatio: 1
   playerAnimatorManager: {fileID: 216899245}
-  timeStopEffect: {fileID: 0}
+  timeStopEffect: {fileID: 1450151423}
   attackManager: {fileID: 1599327478}
   isFreezing: 0
 --- !u!114 &1599327478
@@ -4029,6 +4097,10 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 0.68399996
       objectReference: {fileID: 0}
+    - target: {fileID: 3369532240216579401, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: timeStopEffect
+      value: 
+      objectReference: {fileID: 1450151423}
     - target: {fileID: 5127723845234947621, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: speedPreserveRatio
       value: 1
@@ -4857,5 +4929,6 @@ SceneRoots:
   - {fileID: 472373340}
   - {fileID: 857918411}
   - {fileID: 1977715156}
+  - {fileID: 1433573915}
   - {fileID: 1605061683}
   - {fileID: 1476734291}
