@@ -58,7 +58,7 @@ namespace TangKK
                 Debug.LogError("❌ characterTransform 未赋值，请在 Inspector 中手动拖入角色本体");
         }
 
-        void Update()
+        void FixedUpdate()
         {
             if (spearColliderObject == null || characterTransform == null || playerAnimatorManager == null)
                 return;
@@ -82,19 +82,16 @@ namespace TangKK
                 Vector3 worldTargetPos = transform.TransformPoint(defaultLocalPosition + offset);
                 targetLocalPosition = transform.InverseTransformPoint(worldTargetPos);
 
-                // ✅ 时间段判断（阶段触发控制）
-                if (!phase1Triggered && offsetTimer >= 0f && offsetTimer <= 0.008f)
-                {
-                    phase1Triggered = true;
-                    Debug.Log("➡ 进入第一阶段（0.1s）");
-                }
-
-                if (!phase2Triggered && offsetTimer > 0.008f)
-                {
-                    phase2Triggered = true;
-                    phase1Triggered = false;
-                    Debug.Log("➡ 进入第二阶段（0.3s）");
-                }
+            if (!phase1Triggered && offsetTimer >= 0f && offsetTimer <= 0.008f)
+            {
+                phase1Triggered = true;
+                Debug.Log($"[Phase1] ✅ 触发时间：{Time.time:F4}s，offsetTimer: {offsetTimer:F4}s");
+            }
+            else if (!phase2Triggered && offsetTimer > 0.008f)
+            {
+                phase2Triggered = true;
+                Debug.Log($"[Phase2] ✅ 触发时间：{Time.time:F4}s，offsetTimer: {offsetTimer:F4}s");
+            }
             }
             else
             {

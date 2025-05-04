@@ -11,10 +11,11 @@ namespace TangKK
         private PlayerMovementController playerMovement;
         private PlayerAnimatorManager playerAnimatorManager;
         private SpearColliderManager spearColliderManager;
-        private PerfectAttack  perfectAttack;
-
+        private PerfectAttack perfectAttack;
 
         public bool canTriggerPerfectAttack = true;
+
+        private bool hasHandledTrigger = false; // ✅ 保证每次攻击只处理一次碰撞
 
         private void Awake()
         {
@@ -27,7 +28,6 @@ namespace TangKK
         private void Update()
         {
             bool dashState = playerMovement.GetisStartAttackRecory();
-            // DashScore();
 
             if (!dashState)
             {
@@ -41,6 +41,7 @@ namespace TangKK
         public void ResetAttack()
         {
             hasAttackHit = false;
+            hasHandledTrigger = false; // ✅ 重置触发状态
         }
 
         public void SetAttackHit()
@@ -66,116 +67,91 @@ namespace TangKK
             Debug.Log("[AttackManager] 攻击判定恢复 ✅");
         }
 
-
         private void OnTriggerEnter2D(Collider2D other)
+{
+    // ✅ 只处理指定目标
+    if (!(other.CompareTag("Enemy") || other.CompareTag("Wall") || other.CompareTag("Scarecrow")))
+        return;
+
+    // ✅ 优先级 1：冲刺攻击
+    if (playerMovement.GetDashState() == 2)
+    {
+        HandleDashAttack(other);
+        return;
+    }
+
+    // ✅ 优先级 2：普通攻击（phase1）
+    if (playerAnimatorManager.isAttacking &&
+        spearColliderManager.phase1Triggered &&
+        !spearColliderManager.phase2Triggered)
+    {
+        HandleNormalAttack(other);
+        return;
+    }
+
+    // ✅ 优先级 3：Perfect 攻击（phase2）
+    if (playerAnimatorManager.isAttacking &&
+        spearColliderManager.phase2Triggered &&
+        !perfectAttack.isFreezing)
+    {
+        HandlePerfectAttack(other);
+        return;
+    }
+}
+
+
+
+
+        private void HandlePerfectAttack(Collider2D other)
         {
+            hasHandledTrigger = true;
+            PlayAttackSFX(other, perfect: true);
 
-            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall") || other.CompareTag("Scarecrow")) && playerMovement.GetDashState() == 2 )
-            {
+            Debug.Log("[PerfectAttack] 触发 FreezeTime");
+            Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
+            TutorialManager.Instance.TryAdvance(4);
 
-                    if(other.CompareTag("Wall"))
-                    {
-                        AudioManager.instance.PlaySFX("Boss Attack");    
-                    }
-
-                    if(other.CompareTag("Scarecrow"))
-                    {
-                        AudioManager.instance.PlaySFX("Player Normal Attack to Scarecrow");    
-                    }
-
-                    if(other.CompareTag("Enemy"))
-                    {
-                        AudioManager.instance.PlaySFX("Player Normal Attack to Boss");    
-                    }
-
-
-
-
-
-                    TutorialManager.Instance.TryAdvance(3);
-
-                    playerMovement.SetBackwardJumpState(true);
-                    playerMovement.SetAttackRecoryState(true);
-                    Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
-            }
-
-
-            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")|| other.CompareTag("Scarecrow")) && playerAnimatorManager.isAttacking == true  && spearColliderManager.phase1Triggered == true)
-            {
-                
-
-                if (playerAnimatorManager != null)
-                {
-                    if(other.CompareTag("Wall"))
-                    {
-                        AudioManager.instance.PlaySFX("Boss Attack");    
-                    }
-
-                    if(other.CompareTag("Scarecrow"))
-                    {
-                        AudioManager.instance.PlaySFX("Player Normal Attack to Scarecrow");    
-                    }
-
-                    if(other.CompareTag("Enemy"))
-                    {
-                        AudioManager.instance.PlaySFX("Player Normal Attack to Boss");    
-                    }
-
-
-                    Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
-                    playerAnimatorManager.canAttack = false; // 触发后禁止攻击
-                    playerMovement.SetBackwardJumpState(true); // 启动后跳
-                }
-
-            }
-
-            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall") || other.CompareTag("Scarecrow")) && !perfectAttack.isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
-            {
-
-
-                if(other.CompareTag("Wall"))
-                {
-                    AudioManager.instance.PlaySFX("Boss Attack");    
-                }
-
-                if(other.CompareTag("Scarecrow"))
-                {
-                    AudioManager.instance.PlaySFX("Player Perfect Attack to Scarecrow");    
-                }
-
-                if(other.CompareTag("Enemy"))
-                {
-                    AudioManager.instance.PlaySFX("Player Perfect Attack to Boss");    
-                }
-
-
-                TutorialManager.Instance.TryAdvance(4);
-                Debug.Log("[PerfectAttack] 触发 FreezeTime");
-                Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
-                perfectAttack.StartCoroutine(perfectAttack.FreezeTime());
-
-            }
+            perfectAttack.StartCoroutine(perfectAttack.FreezeTime());
         }
 
-        private void DashScore()
+        private void HandleNormalAttack(Collider2D other)
         {
-            if (playerAnimatorManager.isDash == true)
-            {
-                //TutorialManager.Instance.TryAdvance(3);
-                AudioManager.instance.PlaySFX("Player Dash");
-            }
+            hasHandledTrigger = true;
+            PlayAttackSFX(other, perfect: false);
+
+            Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
+            TutorialManager.Instance.TryAdvance(3);
+
+            playerAnimatorManager.canAttack = false;
+            playerMovement.SetBackwardJumpState(true);
         }
 
+        private void HandleDashAttack(Collider2D other)
+        {
+            hasHandledTrigger = true;
+            PlayAttackSFX(other, perfect: false);
 
+            Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
+            TutorialManager.Instance.TryAdvance(3);
 
+            playerMovement.SetBackwardJumpState(true);
+            playerMovement.SetAttackRecoryState(true);
+        }
 
-
-
-
-
-
-
-
-
+        private void PlayAttackSFX(Collider2D other, bool perfect)
+        {
+            if (other.CompareTag("Wall"))
+            {
+                AudioManager.instance.PlaySFX("Boss Attack");
+            }
+            else if (other.CompareTag("Scarecrow"))
+            {
+                AudioManager.instance.PlaySFX(perfect ? "Player Perfect Attack to Scarecrow" : "Player Normal Attack to Scarecrow");
+            }
+            else if (other.CompareTag("Enemy"))
+            {
+                AudioManager.instance.PlaySFX(perfect ? "Player Perfect Attack to Boss" : "Player Normal Attack to Boss");
+            }
+        }
     }
 }
