@@ -21,7 +21,9 @@ public class TutorialManager : MonoBehaviour
 
     private List<Vector3> spawnedPositions = new List<Vector3>();
     public float minDistance = 0.5f; // 距离小于这个就算重叠
-    public Vector3 offsetStep = new Vector3(0, -1f, 0); // 如果重叠，就向上偏移
+    public Vector3 offsetStep = new Vector3(2f, -2f, 0); // 如果重叠，就向上偏移
+    
+    public bool needTutorial = true; // 是否需要教程
     private void Awake()
     {
         // 单例初始化
@@ -53,6 +55,9 @@ public class TutorialManager : MonoBehaviour
 
     public void ShowStep(int index)
     {
+        if (!needTutorial) return; // 如果不需要教程，直接返回
+
+        
         Vector3 basePos = player.position + uiOffset;
         Vector3 finalPos = basePos;
 
@@ -81,6 +86,12 @@ public class TutorialManager : MonoBehaviour
     public void TryAdvance(int stepId)
     {
         if (stepId != currentStep) return; // 只有顺序正确才允许前进
+
+        if (!needTutorial)
+        {
+            Debug.Log("教程已关闭，无法前进！");
+            return;
+        }
 
         Debug.Log($"当前步骤：{currentStep}，尝试前进到步骤：{stepId}");
 
