@@ -30,6 +30,7 @@ namespace TangKK
         private void Update()
         {
             bool dashState = playerMovement.GetisStartAttackRecory();
+            DashScore();
 
             if (!dashState)
             {
@@ -104,7 +105,7 @@ namespace TangKK
 
 
 
-                    TutorialManager.Instance.TryAdvance(3);
+                    TutorialManager.Instance.TryAdvance(4);
 
                     playerMovement.SetBackwardJumpState(true);
                     playerMovement.SetAttackRecoryState(true);
@@ -134,7 +135,6 @@ namespace TangKK
                     }
 
 
-                    TutorialManager.Instance.TryAdvance(4);
                     Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
                     playerAnimatorManager.canAttack = false; // 触发后禁止攻击
                     playerMovement.SetBackwardJumpState(true); // 启动后跳
@@ -165,18 +165,15 @@ namespace TangKK
                 Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
                 perfectAttack.StartCoroutine(perfectAttack.FreezeTime());
             }
+        }
 
-
-
-
-
-
-
-
-
-
-
-
+        private void DashScore()
+        {
+            if (playerAnimatorManager.isDash == true)
+            {
+                TutorialManager.Instance.TryAdvance(3);
+                AudioManager.instance.PlaySFX("Player Dash");
+            }
         }
 
 
