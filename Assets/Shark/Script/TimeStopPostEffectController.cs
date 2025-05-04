@@ -14,7 +14,7 @@ public class URPTimeStopEffect : MonoBehaviour
     private Vignette vignette;
     private ChromaticAberration chromatic;
 
-    private bool isActive = true;
+    private bool isActive = false;
     private float currentIntensity = 0f;
     private float timer = 0f;
 
