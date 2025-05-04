@@ -105,7 +105,7 @@ namespace TangKK
 
 
 
-                    TutorialManager.Instance.TryAdvance(4);
+                    TutorialManager.Instance.TryAdvance(3);
 
                     playerMovement.SetBackwardJumpState(true);
                     playerMovement.SetAttackRecoryState(true);
@@ -160,7 +160,7 @@ namespace TangKK
                 }
 
 
-                TutorialManager.Instance.TryAdvance(5);
+                TutorialManager.Instance.TryAdvance(4);
                 Debug.Log("[PerfectAttack] 触发 FreezeTime");
                 Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
                 perfectAttack.StartCoroutine(perfectAttack.FreezeTime());
@@ -171,7 +171,7 @@ namespace TangKK
         {
             if (playerAnimatorManager.isDash == true)
             {
-                TutorialManager.Instance.TryAdvance(3);
+                //TutorialManager.Instance.TryAdvance(3);
                 AudioManager.instance.PlaySFX("Player Dash");
             }
         }
