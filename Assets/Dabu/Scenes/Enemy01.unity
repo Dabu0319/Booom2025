@@ -3271,6 +3271,18 @@ MonoBehaviour:
           m_StringArgument: BGM
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1932723606}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Open
+          m_BoolArgument: 0
+        m_CallState: 2
   onTweenCreated:
     m_PersistentCalls:
       m_Calls: []
@@ -4134,6 +4146,11 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 251458111310324242, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
   m_PrefabInstance: {fileID: 1932723597}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1932723606 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3661467337811078103, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+  m_PrefabInstance: {fileID: 1932723597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1948918040
 GameObject:
   m_ObjectHideFlags: 0
@@ -4448,6 +4465,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1312187257112122531, guid: 40e1c3646edb0f344a731249fc4b2152, type: 3}
+      propertyPath: onStart.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1605061682}
     - target: {fileID: 2378194165895018017, guid: 40e1c3646edb0f344a731249fc4b2152, type: 3}
       propertyPath: m_Pivot.x
       value: 0

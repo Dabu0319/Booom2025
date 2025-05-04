@@ -82,13 +82,13 @@ namespace TangKK
                 targetLocalPosition = transform.InverseTransformPoint(worldTargetPos);
 
                 // ✅ 时间段判断（阶段触发控制）
-                if (!phase1Triggered && offsetTimer >= 0f && offsetTimer <= 0.2f)
+                if (!phase1Triggered && offsetTimer >= 0f && offsetTimer <= 0.008f)
                 {
                     phase1Triggered = true;
                     Debug.Log("➡ 进入第一阶段（0.1s）");
                 }
 
-                if (!phase2Triggered && offsetTimer > 0.2f)
+                if (!phase2Triggered && offsetTimer > 0.008f)
                 {
                     phase2Triggered = true;
                     phase1Triggered = false;
