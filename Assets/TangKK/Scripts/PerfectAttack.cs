@@ -96,7 +96,7 @@ namespace TangKK
 
         private void LockPositionDuringFreeze()
         {
-            if (Time.timeScale == 0.02f)
+            if (Time.timeScale == 0.1f)
             {
                 transform.position = frozenPosition;
             }
@@ -120,7 +120,7 @@ namespace TangKK
             playerMovementController.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
             playerMovementController.SetExtraSpeed(0f);
 
-            Time.timeScale = 0.02f;
+            Time.timeScale = 0.1f;
 
             playerMovementController.SetSpaceLock(false);
             playerMovementController.LockDirection(false);
