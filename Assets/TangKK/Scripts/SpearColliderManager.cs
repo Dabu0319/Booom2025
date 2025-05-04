@@ -139,7 +139,7 @@ namespace TangKK
         public void HidCollider()
         {
             AnimatorStateInfo stateInfo = characterAnimator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Dash_loop") || stateInfo.IsName("Player_Attack"))
+            if (stateInfo.IsName("Dash_Loop") || stateInfo.IsName("Player_Attack"))
             {
                 collider.enabled = true;
             }
