@@ -10,6 +10,7 @@ TagManager:
   - Player1
   - Weapon
   - Boss01
+  - Scarecrow
   layers:
   - Default
   - TransparentFX
