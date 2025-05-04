@@ -1,3 +1,5 @@
+using NUnit.Framework.Internal;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -64,7 +66,7 @@ public class PlayerMovementController : MonoBehaviour
     private bool directionLock = false;
     private bool isDead = false;
     private bool forceUltimateDash = false;
-    
+
 
 
 
@@ -86,7 +88,6 @@ public class PlayerMovementController : MonoBehaviour
             HandleDashInput();
             HandleUltimateDashInput();
         }
-
         
     }
 
@@ -334,7 +335,6 @@ public class PlayerMovementController : MonoBehaviour
         isStartAttackRecory = false;
         attackRecoveryTimer = maxAttackRecoveryTime;
         isSpacedLock = false;
-        print("end UD");
     }
 
 
@@ -558,23 +558,6 @@ public class PlayerMovementController : MonoBehaviour
 
 
 
-
-
-    // #################测试用代码，用于数据可视化###################
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 300, 20), $"Speed: {currentSpeed:F1}");
-        GUI.Label(new Rect(10, 30, 300, 20), $"Dash State: {(isDashing ? "Dashing" : "Ready")}");
-        if (cooldownTimer > 0)
-        {
-            GUI.Label(new Rect(10, 50, 300, 20), $"Cooldown: {cooldownTimer:F1}s");
-        }
-        GUI.Label(new Rect(10, 70, 300, 20), $"Direction: {playerDirection:F1}");
-
-        GUI.Label(new Rect(10, 90, 300, 20), $"DashState数字: {GetDashState()}");
-
-
-    }
 
 
 
