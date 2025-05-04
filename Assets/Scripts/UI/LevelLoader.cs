@@ -21,6 +21,21 @@ public class LevelLoader : MonoBehaviour
     //public float nextLevelButtonDelay = 0f;
     public bool transitionScene = false;
     
+    public static LevelLoader Instance;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            //DontDestroyOnLoad(gameObject); // 跨场景不销毁
+        }
+        else
+        {
+            Destroy(gameObject); // 防止重复创建
+        }
+    }
+    
     void Start()
     {
         transition.speed = 1/fadeInTime;

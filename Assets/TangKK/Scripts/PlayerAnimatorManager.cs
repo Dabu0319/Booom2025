@@ -18,6 +18,7 @@ namespace TangKK
 
         //死亡bool
         public bool isDie = false;
+        public bool isOpening = false;
 
 
 
@@ -53,6 +54,8 @@ namespace TangKK
             animator.SetBool("isDash", isDash);
     
             animator.SetBool("isDie", isDie);
+            animator.SetBool("Opening", isOpening);
+
 
         }
 
