@@ -49,14 +49,17 @@ public class URPTimeStopEffect : MonoBehaviour
     private void Update()
     {
         if(isActive && timer < 1f){
-            timer += Time.deltaTime;
+            timer += 10*Time.deltaTime;
         }else if(isActive == false && timer > 0f){
-            timer -= Time.deltaTime;
+            timer -= 10*Time.deltaTime;
         }
         currentIntensity = timer;
-        print(timer);
-        print(currentIntensity);
-        UpdateEffects(currentIntensity);
+        if(isActive){
+            UpdateEffects(1);
+        }else if(isActive == false){
+            UpdateEffects(0);
+        }
+
     }
 
     public void Activate()
