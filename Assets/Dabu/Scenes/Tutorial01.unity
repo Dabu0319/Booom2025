@@ -2926,6 +2926,7 @@ MonoBehaviour:
   playerMovementController: {fileID: 1624943506}
   speedPreserveRatio: 1
   playerAnimatorManager: {fileID: 1624943508}
+  timeStopEffect: {fileID: 0}
   attackManager: {fileID: 1102117678}
   isFreezing: 0
 --- !u!114 &1102117680
@@ -3446,7 +3447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1599327472
 Transform:
   m_ObjectHideFlags: 0
@@ -3578,6 +3579,7 @@ MonoBehaviour:
   playerMovementController: {fileID: 635196846}
   speedPreserveRatio: 1
   playerAnimatorManager: {fileID: 216899245}
+  timeStopEffect: {fileID: 0}
   attackManager: {fileID: 1599327478}
   isFreezing: 0
 --- !u!114 &1599327478
@@ -4144,6 +4146,27 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 251458111310324242, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
   m_PrefabInstance: {fileID: 1932723597}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &1872349421 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 813194517492596121, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+  m_PrefabInstance: {fileID: 1932723597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1872349424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872349415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3576d848e6050c448767bc9825f3978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponSprite: {fileID: 1872349421}
+  shouldGlow: 0
+  glowColor: {r: 1.5, g: 1.5, b: 1.5, a: 1}
+  glowDuration: 0.2
 --- !u!1 &1913309377
 GameObject:
   m_ObjectHideFlags: 0
@@ -4595,6 +4618,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1872349416}
+    - targetCorrespondingSourceObject: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1872349424}
     - targetCorrespondingSourceObject: {fileID: 2946043326695047574, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 715331233}

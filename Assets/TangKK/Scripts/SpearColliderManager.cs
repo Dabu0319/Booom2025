@@ -34,6 +34,7 @@ namespace TangKK
         private float offsetTimer = 0f;
         private PlayerAnimatorManager playerAnimatorManager;
         private Collider2D collider;
+        private SpriteGlowOnAttack spriteGlowOnAttack;
 
         // ✅ 偏移进度（0 ~ 1）
         [Range(0f, 1f)]
@@ -47,6 +48,7 @@ namespace TangKK
         {
             collider = GetComponent<Collider2D>();
             playerAnimatorManager = GetComponentInParent<PlayerAnimatorManager>();
+            spriteGlowOnAttack = GetComponentInParent<SpriteGlowOnAttack>();
 
             if (playerAnimatorManager == null)
                 Debug.LogError("❌ 未找到 PlayerAnimatorManager，请确认它挂在父物体上");
@@ -88,6 +90,7 @@ namespace TangKK
 
                 if (!phase2Triggered && offsetTimer > 0.5f)
                 {
+                    spriteGlowOnAttack.shouldGlow = true;
                     phase2Triggered = true;
                     phase1Triggered = false;
                     Debug.Log("➡ 进入第二阶段（0.3s）");
@@ -100,6 +103,7 @@ namespace TangKK
                 attackOffsetProgress = 0f;
                 phase1Triggered = false;
                 phase2Triggered = false;
+                spriteGlowOnAttack.shouldGlow = false;
             }
 
             // ✅ 平滑移动（用于缓和突变）

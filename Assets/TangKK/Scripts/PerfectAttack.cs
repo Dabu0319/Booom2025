@@ -11,6 +11,7 @@ namespace TangKK
         [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private float speedPreserveRatio = 0.7f;
         [SerializeField] private PlayerAnimatorManager playerAnimatorManager;
+        [SerializeField] private URPTimeStopEffect timeStopEffect;
         private SpearColliderManager spearColliderManager;
 
 
@@ -110,6 +111,7 @@ namespace TangKK
 
             freezeTimer = 0f;
             pressSpaceTimer = 0f;
+            timeStopEffect.Activate(); 
 
             frozenPosition = transform.position;
             frozenVelocity = playerMovementController.GetComponent<Rigidbody2D>().linearVelocity;
@@ -135,6 +137,7 @@ namespace TangKK
             Debug.Log($"[ResumeTime] 执行，fromSpaceKey={fromSpaceKey}, spaceDuration={spaceDuration}");
 
             Time.timeScale = 1f;
+            timeStopEffect.Deactivate();
             isFreezing = false;
 
             playerMovementController.SetSpaceLock(false);

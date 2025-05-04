@@ -30,7 +30,7 @@ namespace TangKK
         private void Update()
         {
             bool dashState = playerMovement.GetisStartAttackRecory();
-            DashScore();
+            // DashScore();
 
             if (!dashState)
             {
@@ -101,10 +101,6 @@ namespace TangKK
                         AudioManager.instance.PlaySFX("Player Normal Attack to Boss");    
                     }
 
-
-
-
-
                     TutorialManager.Instance.TryAdvance(4);
 
                     playerMovement.SetBackwardJumpState(true);
@@ -167,25 +163,14 @@ namespace TangKK
             }
         }
 
-        private void DashScore()
-        {
-            if (playerAnimatorManager.isDash == true)
-            {
-                TutorialManager.Instance.TryAdvance(3);
-                AudioManager.instance.PlaySFX("Player Dash");
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
+        // private void DashScore()
+        // {
+        //     if (playerAnimatorManager.isDash == true)
+        //     {
+        //         TutorialManager.Instance.TryAdvance(3);
+        //         AudioManager.instance.PlaySFX("Player Dash");
+        //     }
+        // }
 
     }
 }
