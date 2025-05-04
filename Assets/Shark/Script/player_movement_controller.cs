@@ -71,6 +71,8 @@ public class PlayerMovementController : MonoBehaviour
     private bool isDead = false;
     private bool forceUltimateDash = false;
 
+    private bool playerLock = true;
+
 
 
 
@@ -85,43 +87,45 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        if(isDead == false){
-            mousePositionDirection();
-            if (forceUltimateDash)
-            {
-                forceUltimateDash = false;
-                StartUltimateDash();
+        if(playerLock == false){
+            if(isDead == false){
+                mousePositionDirection();
+                if (forceUltimateDash)
+                {
+                    forceUltimateDash = false;
+                    StartUltimateDash();
+                }
+                
+                HandleDashInput();
+                HandleUltimateDashInput();
             }
-            
-            HandleDashInput();
-            HandleUltimateDashInput();
         }
-        
     }
 
     private void FixedUpdate()
     {
-        if(isDead == false){
-            AttackRecovery();
-            BackwardJump();
+        if(playerLock == false){
+            if(isDead == false){
+                AttackRecovery();
+                BackwardJump();
 
 
 
-            UpdateSpeed();
-            if (isDashing || isUltimateDashing || isStartAttackRecory || isBackwardJump)
-            {
-                UpdateDash();
-                UltimateDashing();
+                UpdateSpeed();
+                if (isDashing || isUltimateDashing || isStartAttackRecory || isBackwardJump)
+                {
+                    UpdateDash();
+                    UltimateDashing();
 
+                }
+                else
+                {
+                    UpdateNormalMovement();
+                }
+                
+                UpdateTimers();
             }
-            else
-            {
-                UpdateNormalMovement();
-            }
-            
-            UpdateTimers();
         }
-
 
     }
 
@@ -589,7 +593,10 @@ public class PlayerMovementController : MonoBehaviour
 
 
 
-
+    public void SetPlayerLock(bool value){
+        //true：不可操作  false：可操作
+        playerLock = value;
+    }
 
 
 
