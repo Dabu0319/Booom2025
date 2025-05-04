@@ -4051,7 +4051,35 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 7d3884ebc76e0834ebec6333e1480cef, type: 3}
     loop: 1
     volume: 0.8
-  sfxSounds: []
+  sfxSounds:
+  - name: Player Normal Attack to Scarecrow
+    clip: {fileID: 8300000, guid: 0545d5ba9926a50498d017d129ef626b, type: 3}
+    loop: 0
+    volume: 0
+  - name: Player Perfect Attack to Scarecrow
+    clip: {fileID: 8300000, guid: 84f173ef64f7d324aba989235c427d56, type: 3}
+    loop: 0
+    volume: 0
+  - name: Player Perfect Attack to Boss
+    clip: {fileID: 8300000, guid: 774972bead385894397d58de1d4a8f95, type: 3}
+    loop: 0
+    volume: 0
+  - name: Player Normal Attack to Boss
+    clip: {fileID: 8300000, guid: 89fea3cc92ae84647b2782d5bd11b2b0, type: 3}
+    loop: 0
+    volume: 0
+  - name: Boss Attack
+    clip: {fileID: 8300000, guid: 4c490ec8d9ef16a4b8d9d838fbda3863, type: 3}
+    loop: 0
+    volume: 0
+  - name: Boss die1
+    clip: {fileID: 8300000, guid: 255e3de4ff38a334f8422c0af86ac025, type: 3}
+    loop: 0
+    volume: 0
+  - name: Boss die1
+    clip: {fileID: 8300000, guid: 255e3de4ff38a334f8422c0af86ac025, type: 3}
+    loop: 0
+    volume: 0
   musicSource: {fileID: 653600855}
   sfxSource: {fileID: 668467839}
   currentMusic: BGM
