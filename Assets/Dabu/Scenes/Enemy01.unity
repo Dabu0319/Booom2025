@@ -4173,6 +4173,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: isDashCheck
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: isMoveCheck
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: isUltimateDashCheck
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8488472333121268282, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_Targets.Array.data[1].target
       value: 
