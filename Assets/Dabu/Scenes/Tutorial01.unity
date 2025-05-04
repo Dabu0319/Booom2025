@@ -1050,10 +1050,13 @@ MonoBehaviour:
   - {fileID: 2274901986629761159, guid: 7bc571e24a1f54b48800ab7861445e04, type: 3}
   - {fileID: 999471288093782973, guid: 038c6d7e23ee92c4fa072b17a931aef2, type: 3}
   - {fileID: 5353778024284310892, guid: b47b23aec3b74f34d90f890a455d6423, type: 3}
+  - {fileID: 1401816542244985071, guid: 6de578fe162f27c4190bcf442440eb45, type: 3}
   player: {fileID: 635196847}
   uiOffset: {x: 0, y: 2, z: 0}
   currentStep: 0
   Scarecrow: {fileID: 928563630}
+  minDistance: 0.5
+  offsetStep: {x: 0, y: 0.5, z: 0}
 --- !u!4 &521888263
 Transform:
   m_ObjectHideFlags: 0
@@ -3322,7 +3325,8 @@ PrefabInstance:
       value: LevelLoaderNew
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 812303811988054558, guid: b267e09cbfbaf5041b06bb85a41e6baa, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b267e09cbfbaf5041b06bb85a41e6baa, type: 3}
@@ -3653,6 +3657,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 635196846}
+        m_TargetAssemblyTypeName: PlayerMovementController, Assembly-CSharp
+        m_MethodName: SetPlayerLock
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1872349422}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Player_Run
+          m_BoolArgument: 1
+        m_CallState: 2
   onUpdate:
     m_PersistentCalls:
       m_Calls: []
@@ -3685,6 +3713,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 635196846}
+        m_TargetAssemblyTypeName: PlayerMovementController, Assembly-CSharp
+        m_MethodName: SetPlayerLock
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
   onTweenCreated:
     m_PersistentCalls:
@@ -4146,27 +4186,11 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 251458111310324242, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
   m_PrefabInstance: {fileID: 1932723597}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &1872349421 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 813194517492596121, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+--- !u!95 &1872349422 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3661467337811078103, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
   m_PrefabInstance: {fileID: 1932723597}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1872349424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1872349415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3576d848e6050c448767bc9825f3978, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponSprite: {fileID: 1872349421}
-  shouldGlow: 0
-  glowColor: {r: 1.5, g: 1.5, b: 1.5, a: 1}
-  glowDuration: 0.2
 --- !u!1 &1913309377
 GameObject:
   m_ObjectHideFlags: 0
@@ -4489,6 +4513,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -3079326535514611068, guid: 1291c926249da204fb252ea9c2935132, type: 3}
+    - target: {fileID: 813194517492596121, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 983455220215163270, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: movementController
       value: 
@@ -4520,6 +4548,10 @@ PrefabInstance:
     - target: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_TagString

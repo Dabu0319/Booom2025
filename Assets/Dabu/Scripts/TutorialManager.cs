@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -18,7 +19,9 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject Scarecrow;
 
-
+    private List<Vector3> spawnedPositions = new List<Vector3>();
+    public float minDistance = 0.5f; // 距离小于这个就算重叠
+    public Vector3 offsetStep = new Vector3(0, -1f, 0); // 如果重叠，就向上偏移
     private void Awake()
     {
         // 单例初始化
@@ -50,12 +53,31 @@ public class TutorialManager : MonoBehaviour
 
     public void ShowStep(int index)
     {
-        
+        Vector3 basePos = player.position + uiOffset;
+        Vector3 finalPos = basePos;
 
-        //instantiate game prefab
-        GameObject stepUI = Instantiate(tutorialSteps[index], player.position + uiOffset, Quaternion.identity);
+        // 检查是否与已有 UI 太近，最多尝试偏移 10 次
+        for (int i = 0; i < 10; i++)
+        {
+            bool tooClose = false;
+            foreach (var pos in spawnedPositions)
+            {
+                if (Vector3.Distance(finalPos, pos) < minDistance)
+                {
+                    tooClose = true;
+                    break;
+                }
+            }
+
+            if (!tooClose) break;
+
+            finalPos += offsetStep; // 向上偏移
+        }
+
+        // 创建并记录位置
+        GameObject stepUI = Instantiate(tutorialSteps[index], finalPos, Quaternion.identity);
+        spawnedPositions.Add(finalPos);
     }
-
     public void TryAdvance(int stepId)
     {
         if (stepId != currentStep) return; // 只有顺序正确才允许前进
@@ -71,7 +93,8 @@ public class TutorialManager : MonoBehaviour
         else
         {
             Debug.Log("教程完成！");
-            // 可扩展：触发事件、标记存档、隐藏UI等
+            ShowStep(5);
+            LevelLoader.Instance.LoadNextLevelWithDelay(2f);
         }
     }
 }

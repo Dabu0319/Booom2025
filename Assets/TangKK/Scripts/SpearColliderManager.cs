@@ -90,7 +90,6 @@ namespace TangKK
 
                 if (!phase2Triggered && offsetTimer > 0.5f)
                 {
-                    spriteGlowOnAttack.shouldGlow = true;
                     phase2Triggered = true;
                     phase1Triggered = false;
                     Debug.Log("➡ 进入第二阶段（0.3s）");
@@ -103,7 +102,6 @@ namespace TangKK
                 attackOffsetProgress = 0f;
                 phase1Triggered = false;
                 phase2Triggered = false;
-                spriteGlowOnAttack.shouldGlow = false;
             }
 
             // ✅ 平滑移动（用于缓和突变）
