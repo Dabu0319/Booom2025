@@ -90,9 +90,14 @@ namespace TangKK
                         AudioManager.instance.PlaySFX("Boss Attack");    
                     }
 
-                    if(other.CompareTag("Wall"))
+                    if(other.CompareTag("Scarecrow"))
                     {
-                        AudioManager.instance.PlaySFX("Boss Attack");    
+                        AudioManager.instance.PlaySFX("Player Normal Attack to Scarecrow");    
+                    }
+
+                    if(other.CompareTag("Enemy"))
+                    {
+                        AudioManager.instance.PlaySFX("Player Normal Attack to Boss");    
                     }
 
 
@@ -118,6 +123,17 @@ namespace TangKK
                         AudioManager.instance.PlaySFX("Boss Attack");    
                     }
 
+                    if(other.CompareTag("Scarecrow"))
+                    {
+                        AudioManager.instance.PlaySFX("Player Normal Attack to Scarecrow");    
+                    }
+
+                    if(other.CompareTag("Enemy"))
+                    {
+                        AudioManager.instance.PlaySFX("Player Normal Attack to Boss");    
+                    }
+
+
                     TutorialManager.Instance.TryAdvance(4);
                     Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
                     playerAnimatorManager.canAttack = false; // 触发后禁止攻击
@@ -132,6 +148,18 @@ namespace TangKK
                 {
                     AudioManager.instance.PlaySFX("Boss Attack");    
                 }
+
+                if(other.CompareTag("Scarecrow"))
+                {
+                    AudioManager.instance.PlaySFX("Player Perfect Attack to Scarecrow");    
+                }
+
+                if(other.CompareTag("Enemy"))
+                {
+                    AudioManager.instance.PlaySFX("Player Perfect Attack to Boss");    
+                }
+
+
                 TutorialManager.Instance.TryAdvance(5);
                 Debug.Log("[PerfectAttack] 触发 FreezeTime");
                 Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
