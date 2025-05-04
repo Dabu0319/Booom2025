@@ -89,6 +89,9 @@ MonoBehaviour:
   turnSpeed: 10
   isMouseControl: 0
   pressSpaceTimer: 0
+  isMoveCheck: 0
+  isDashCheck: 0
+  isUltimateDashCheck: 0
 --- !u!50 &8285692864938531556
 Rigidbody2D:
   serializedVersion: 5
@@ -116,6 +119,174 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!1 &2492255716420957549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 810314561171418841}
+  - component: {fileID: 5070769424637863447}
+  - component: {fileID: 627883561599566636}
+  - component: {fileID: 8715369573871285348}
+  - component: {fileID: 3302772551413846743}
+  m_Layer: 6
+  m_Name: SpearCollider
+  m_TagString: Weapon
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &810314561171418841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492255716420957549}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5275699218016112324}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &5070769424637863447
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492255716420957549}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.28362322, y: 2.5737438}
+      - {x: 0.19938803, y: 2.4568224}
+      - {x: -0.063534796, y: 0.76415646}
+      - {x: 0.08959776, y: 0.6762343}
+      - {x: 0.4254347, y: 0.68833876}
+      - {x: 0.49738264, y: 0.75365645}
+  m_UseDelaunayMesh: 0
+--- !u!114 &627883561599566636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492255716420957549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b72466c05a4b64499f92a1d15a32016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableOffset: 0
+  spearColliderObject: {fileID: 2492255716420957549}
+  characterTransform: {fileID: 5696075336743862776}
+  angleOffset: -90
+  attackOffsetDistance: -0.38
+  defaultLocalPosition: {x: 0, y: 0, z: 0}
+  slideSpeed: 20
+  offsetDuration: 0.0167
+  slideCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.70666504
+      value: 0.9943466
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attackOffsetProgress: 0
+  phase1Triggered: 0
+  phase2Triggered: 0
+--- !u!114 &8715369573871285348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492255716420957549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c78e7bb261018b74aaf8f0e91cbc90d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freezeDuration: 3
+  playerMovementController: {fileID: 7660509266988085903}
+  speedPreserveRatio: 1
+  playerAnimatorManager: {fileID: 6861828003728963093}
+  attackManager: {fileID: 3302772551413846743}
+  isFreezing: 0
+--- !u!114 &3302772551413846743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492255716420957549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6411086261e312849a40378e39c63c08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasAttackHit: 0
+  attackCollider: {fileID: 0}
+  canTriggerPerfectAttack: 1
 --- !u!1 &2946043326695047574
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,8 +300,9 @@ GameObject:
   - component: {fileID: 4812663821579579433}
   - component: {fileID: 238881010145744772}
   - component: {fileID: 5452675446901466249}
-  - component: {fileID: 8338439290457694960}
   - component: {fileID: 8531336151164574259}
+  - component: {fileID: 2147974682197303070}
+  - component: {fileID: 5566585746362627883}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -278,7 +450,19 @@ MonoBehaviour:
   speedThreshold: 5
   bufferSize: 10
   needEnemy: 0
---- !u!114 &8338439290457694960
+--- !u!114 &8531336151164574259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2946043326695047574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 176d4a32f153ae740b0b928b3b1c2e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2147974682197303070
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -312,7 +496,7 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8531336151164574259
+--- !u!114 &5566585746362627883
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -384,6 +568,7 @@ GameObject:
   - component: {fileID: 251458111310324242}
   - component: {fileID: 983455220215163270}
   - component: {fileID: 1625836171069105813}
+  - component: {fileID: 7223409431829536460}
   m_Layer: 6
   m_Name: PlayerSprite
   m_TagString: Player
@@ -405,6 +590,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6345302447487661551}
+  - {fileID: 810314561171418841}
   m_Father: {fileID: 5696075336743862776}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3661467337811078103
@@ -566,6 +752,22 @@ MonoBehaviour:
   resetDelay: 1.5
   isDead: 0
 --- !u!114 &1625836171069105813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5385155921453438165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3e00ceefab7d84a873150a1479144c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableAfterImage: 0
+  afterImagePrefab: {fileID: 2009254819541442393, guid: 9600b08484dc1a64fac75b1be60cf832, type: 3}
+  afterImageColor: {r: 0.7509433, g: 0, b: 0.66527104, a: 0.5}
+  afterImageDuration: 0.3
+--- !u!114 &7223409431829536460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -772,10 +974,10 @@ MonoBehaviour:
   spearColliderObject: {fileID: 7116112388847548742}
   characterTransform: {fileID: 5696075336743862776}
   angleOffset: -90
-  attackOffsetDistance: -0.5
+  attackOffsetDistance: -0.38
   defaultLocalPosition: {x: 0, y: 0, z: 0}
   slideSpeed: 20
-  offsetDuration: 1
+  offsetDuration: 0.0167
   slideCurve:
     serializedVersion: 2
     m_Curve:
