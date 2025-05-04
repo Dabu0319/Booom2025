@@ -12,7 +12,6 @@ namespace TangKK
         private PlayerAnimatorManager playerAnimatorManager;
         private SpearColliderManager spearColliderManager;
         private PerfectAttack  perfectAttack;
-        private Dabu10_CameraShake dabu10_CameraShake;
 
 
         [Header("攻击判定相关")]
@@ -22,7 +21,6 @@ namespace TangKK
 
         private void Awake()
         {
-            dabu10_CameraShake = FindAnyObjectByType<Dabu10_CameraShake>();
             perfectAttack = GetComponent<PerfectAttack>();
             spearColliderManager = GetComponent<SpearColliderManager>();
             playerMovement = GetComponentInParent<PlayerMovementController>();
@@ -84,19 +82,43 @@ namespace TangKK
         private void OnTriggerEnter2D(Collider2D other)
         {
 
-            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")) && playerMovement.GetDashState() == 2 )
+            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall") || other.CompareTag("Scarecrow")) && playerMovement.GetDashState() == 2 )
             {
+
+                    if(other.CompareTag("Wall"))
+                    {
+                        AudioManager.instance.PlaySFX("Boss Attack");    
+                    }
+
+                    if(other.CompareTag("Wall"))
+                    {
+                        AudioManager.instance.PlaySFX("Boss Attack");    
+                    }
+
+
+
+
+
+                    TutorialManager.Instance.TryAdvance(3);
+
                     playerMovement.SetBackwardJumpState(true);
                     playerMovement.SetAttackRecoryState(true);
                     Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
             }
 
 
-            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")) && playerAnimatorManager.isAttacking == true  && spearColliderManager.phase1Triggered == true)
+            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")|| other.CompareTag("Scarecrow")) && playerAnimatorManager.isAttacking == true  && spearColliderManager.phase1Triggered == true)
             {
+                
 
                 if (playerAnimatorManager != null)
                 {
+                    if(other.CompareTag("Wall"))
+                    {
+                        AudioManager.instance.PlaySFX("Boss Attack");    
+                    }
+
+                    TutorialManager.Instance.TryAdvance(4);
                     Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
                     playerAnimatorManager.canAttack = false; // 触发后禁止攻击
                     playerMovement.SetBackwardJumpState(true); // 启动后跳
@@ -104,8 +126,13 @@ namespace TangKK
 
             }
 
-            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall")) && !perfectAttack.isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
+            if ((other.CompareTag("Enemy") ||  other.CompareTag("Wall") || other.CompareTag("Scarecrow")) && !perfectAttack.isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
             {
+                if(other.CompareTag("Wall"))
+                {
+                    AudioManager.instance.PlaySFX("Boss Attack");    
+                }
+                TutorialManager.Instance.TryAdvance(5);
                 Debug.Log("[PerfectAttack] 触发 FreezeTime");
                 Dabu10_CameraShake.instance.ShakeCamera(5f, 0.1f);
                 perfectAttack.StartCoroutine(perfectAttack.FreezeTime());

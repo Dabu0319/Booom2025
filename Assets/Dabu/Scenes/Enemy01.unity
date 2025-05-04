@@ -4080,6 +4080,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 255e3de4ff38a334f8422c0af86ac025, type: 3}
     loop: 0
     volume: 0
+  - name: Player Dash
+    clip: {fileID: 8300000, guid: 674d4cf97574013469a663b3c617ab62, type: 3}
+    loop: 0
+    volume: 0
   musicSource: {fileID: 653600855}
   sfxSource: {fileID: 668467839}
   currentMusic: BGM
