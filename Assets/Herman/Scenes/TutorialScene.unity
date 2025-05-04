@@ -2194,7 +2194,7 @@ SpriteRenderer:
   m_Size: {x: 2.68, y: 1.41}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &938506188
@@ -3003,7 +3003,7 @@ SpriteRenderer:
   m_Size: {x: 2.02, y: 1.35}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1801101919
@@ -3413,6 +3413,34 @@ PrefabInstance:
     - target: {fileID: 7163326075015396309, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: maxAttackRecoveryTime
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: ultimateDashRequiremnetTimer
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: dashSpeedCurve.m_Curve.Array.data[1].time
+      value: 0.4985962
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: dashSpeedCurve.m_Curve.Array.data[0].value
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: dashSpeedCurve.m_Curve.Array.data[1].inSlope
+      value: -13.047136
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: dashSpeedCurve.m_Curve.Array.data[1].inWeight
+      value: 0.06960993
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660509266988085903, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: dashSpeedCurve.m_Curve.Array.data[1].outSlope
+      value: -13.047136
       objectReference: {fileID: 0}
     - target: {fileID: 8488472333121268282, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_Targets.Array.data[1].target
