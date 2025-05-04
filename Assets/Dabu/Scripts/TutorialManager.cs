@@ -57,29 +57,42 @@ public class TutorialManager : MonoBehaviour
     {
         if (!needTutorial) return; // 如果不需要教程，直接返回
 
-        
         Vector3 basePos = player.position + uiOffset;
         Vector3 finalPos = basePos;
 
-        // 检查是否与已有 UI 太近，最多尝试偏移 10 次
-        for (int i = 0; i < 10; i++)
+        // 多方向尝试偏移
+        bool foundSafe = false;
+        int tryCount = 0;
+        float tryRadius = 0.5f;
+
+        while (!foundSafe && tryCount < 30)
         {
-            bool tooClose = false;
+            foundSafe = true;
             foreach (var pos in spawnedPositions)
             {
                 if (Vector3.Distance(finalPos, pos) < minDistance)
                 {
-                    tooClose = true;
+                    foundSafe = false;
                     break;
                 }
             }
 
-            if (!tooClose) break;
+            if (!foundSafe)
+            {
+                // 改变位置：螺旋偏移尝试
+                float angle = tryCount * 45f * Mathf.Deg2Rad; // 每次旋转45度
+                float radius = tryRadius + (tryCount * 0.3f); // 逐步增加半径
 
-            finalPos += offsetStep; // 向上偏移
+                finalPos = basePos + new Vector3(
+                    Mathf.Cos(angle) * radius,
+                    Mathf.Sin(angle) * radius,
+                    0f
+                );
+
+                tryCount++;
+            }
         }
 
-        // 创建并记录位置
         GameObject stepUI = Instantiate(tutorialSteps[index], finalPos, Quaternion.identity);
         spawnedPositions.Add(finalPos);
     }
