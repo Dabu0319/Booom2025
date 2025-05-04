@@ -35,6 +35,7 @@ namespace TangKK
         private PlayerAnimatorManager playerAnimatorManager;
         private Collider2D collider;
         private SpriteGlowOnAttack spriteGlowOnAttack;
+        public Animator characterAnimator;
 
         // ✅ 偏移进度（0 ~ 1）
         [Range(0f, 1f)]
@@ -137,7 +138,8 @@ namespace TangKK
 
         public void HidCollider()
         {
-            if(playerAnimatorManager.isAttacking == true || playerAnimatorManager.isDash == true)
+            AnimatorStateInfo stateInfo = characterAnimator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Dash_loop") || stateInfo.IsName("Player_Attack"))
             {
                 collider.enabled = true;
             }

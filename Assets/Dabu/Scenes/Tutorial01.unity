@@ -2654,6 +2654,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  characterAnimator: {fileID: 0}
   attackOffsetProgress: 0
   phase1Triggered: 0
   phase2Triggered: 0
@@ -3369,6 +3370,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  characterAnimator: {fileID: 0}
   attackOffsetProgress: 0
   phase1Triggered: 0
   phase2Triggered: 0
@@ -4547,6 +4549,10 @@ PrefabInstance:
       propertyPath: movementController
       value: 
       objectReference: {fileID: 635196846}
+    - target: {fileID: 1924122191313031172, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: characterAnimator
+      value: 
+      objectReference: {fileID: 1872349422}
     - target: {fileID: 2946043326695047574, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_IsActive
       value: 0
