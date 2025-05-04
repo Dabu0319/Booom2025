@@ -21,7 +21,7 @@ public class TutorialManager : MonoBehaviour
 
     private List<Vector3> spawnedPositions = new List<Vector3>();
     public float minDistance = 0.5f; // 距离小于这个就算重叠
-    public Vector3 offsetStep = new Vector3(2f, -2f, 0); // 如果重叠，就向上偏移
+    public Vector3 offsetStep = new Vector3(0, -1f, 0); // 如果重叠，就向上偏移
     
     public bool needTutorial = true; // 是否需要教程
     private void Awake()
@@ -57,44 +57,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (!needTutorial) return; // 如果不需要教程，直接返回
 
-        Vector3 basePos = player.position + uiOffset;
-        Vector3 finalPos = basePos;
-
-        // 多方向尝试偏移
-        bool foundSafe = false;
-        int tryCount = 0;
-        float tryRadius = 0.5f;
-
-        while (!foundSafe && tryCount < 30)
-        {
-            foundSafe = true;
-            foreach (var pos in spawnedPositions)
-            {
-                if (Vector3.Distance(finalPos, pos) < minDistance)
-                {
-                    foundSafe = false;
-                    break;
-                }
-            }
-
-            if (!foundSafe)
-            {
-                // 改变位置：螺旋偏移尝试
-                float angle = tryCount * 45f * Mathf.Deg2Rad; // 每次旋转45度
-                float radius = tryRadius + (tryCount * 0.3f); // 逐步增加半径
-
-                finalPos = basePos + new Vector3(
-                    Mathf.Cos(angle) * radius,
-                    Mathf.Sin(angle) * radius,
-                    0f
-                );
-
-                tryCount++;
-            }
-        }
-
-        GameObject stepUI = Instantiate(tutorialSteps[index], finalPos, Quaternion.identity);
-        spawnedPositions.Add(finalPos);
+        tutorialSteps[index].SetActive(true); // 显示当前步骤的 UI
     }
     public void TryAdvance(int stepId)
     {
