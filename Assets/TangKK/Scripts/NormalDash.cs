@@ -17,14 +17,14 @@ namespace TangKK
             }
         }
 
-        // private void OnTriggerEnter2D(Collider2D other)
-        // {
+        private void OnTriggerEnter2D(Collider2D other)
+        {
 
-        //     if (other.CompareTag("Enemy") && playerMovement.GetDashState() == 2 )
-        //     {
-        //             playerMovement.SetBackwardJumpState(true);
-        //             playerMovement.SetAttackRecoryState(true);
-        //         }
-        //     }
+            if ((other.CompareTag("Enemy") || other.CompareTag("Scarecrow") || other.CompareTag("Wall")) && playerMovement.GetDashState() == 2 )
+            {
+                    playerMovement.SetBackwardJumpState(true);
+                    playerMovement.SetAttackRecoryState(true);
+                }
+            }
     }
 }
