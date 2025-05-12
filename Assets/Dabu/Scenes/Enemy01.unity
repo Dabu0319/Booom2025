@@ -4750,16 +4750,28 @@ PrefabInstance:
       objectReference: {fileID: 635196847}
     - target: {fileID: 419520492716648852, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: m_Lens.OrthographicSize
-      value: 3.7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 635196847}
     - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
+      propertyPath: maxSize
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
+      propertyPath: minSize
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: playerMovementController
       value: 
       objectReference: {fileID: 635196846}
+    - target: {fileID: 2312971978669279411, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2312971978669279411, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: m_BoundingShape2D
       value: 
