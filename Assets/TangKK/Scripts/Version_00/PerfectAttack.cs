@@ -191,15 +191,5 @@ namespace TangKK
             attackManager?.TriggerPerfectAttackRecovery(0.5f);
         }
 
-        // private void OnTriggerEnter2D(Collider2D collision)
-        // {
-
-        //     if (collision.CompareTag("Enemy") && !isFreezing && spearColliderManager.phase2Triggered == true && playerAnimatorManager.isAttacking == true)
-        //     {
-        //         Debug.Log("[PerfectAttack] 触发 FreezeTime");
-        //         StartCoroutine(FreezeTime());
-        //     }
-        // }
-
     }
 }

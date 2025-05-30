@@ -1,11 +1,6 @@
-
 using NUnit.Framework.Internal;
 using Unity.VisualScripting;
-
-
-
 using UnityEngine;
-
 
 //#############################数据接口################################
 //GetDirection():获取角色当前面朝方向,返回vector2
@@ -20,7 +15,6 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float baseSpeed = 5f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 15f;
-
 
     [Header("Dash Settings")]
     [SerializeField] private float dashDuration = 0.5f;
@@ -37,6 +31,9 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private AnimationCurve dashSpeedCurve = 
         new AnimationCurve(new Keyframe(0, 1.5f), new Keyframe(0.5f, 1f));
 
+    [Header("Time Freeze Movement")]
+    [SerializeField] private bool isInTimeFreeze = false;
+    [SerializeField] private float timeFreezeSpeed = 5f;
     
     [Header("References")]
     [SerializeField] private Rigidbody2D playerRigidbody;
@@ -47,8 +44,6 @@ public class PlayerMovementController : MonoBehaviour
 
     public bool isMouseControl = false;
 
-
-    
     // 运行时状态
     private float currentSpeed = 0;
     private float extraSpeed = 0;
@@ -73,17 +68,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private bool playerLock = true;
 
-
-
-
     //tutorial check
     public bool isMoveCheck = false;
     public bool isDashCheck = false;
     public bool isUltimateDashCheck = false;
-
-
-
-
 
     private void Update()
     {
@@ -96,8 +84,16 @@ public class PlayerMovementController : MonoBehaviour
                     StartUltimateDash();
                 }
                 
-                HandleDashInput();
-                HandleUltimateDashInput();
+                // 处理时停期间的特殊输入
+                if (isInTimeFreeze)
+                {
+                    HandleTimeFreezeInput();
+                }
+                else
+                {
+                    HandleDashInput();
+                    HandleUltimateDashInput();
+                }
             }
         }
     }
@@ -106,34 +102,117 @@ public class PlayerMovementController : MonoBehaviour
     {
         if(playerLock == false){
             if(isDead == false){
-                AttackRecovery();
-                BackwardJump();
-
-
-
-                UpdateSpeed();
-                if (isDashing || isUltimateDashing || isStartAttackRecory || isBackwardJump)
+                // 时停期间使用特殊的移动更新
+                if (isInTimeFreeze)
                 {
-                    UpdateDash();
-                    UltimateDashing();
-
+                    UpdateTimeFreezeMovement();
                 }
                 else
                 {
-                    UpdateNormalMovement();
+                    AttackRecovery();
+                    BackwardJump();
+                    UpdateSpeed();
+                    if (isDashing || isUltimateDashing || isStartAttackRecory || isBackwardJump)
+                    {
+                        UpdateDash();
+                        UltimateDashing();
+                    }
+                    else
+                    {
+                        UpdateNormalMovement();
+                    }
+                    UpdateTimers();
                 }
-                
-                UpdateTimers();
             }
         }
-
     }
 
+    #region Time Freeze Movement Methods
+    /// <summary>
+    /// 处理时停期间的输入（由PerfectAttack调用）
+    /// </summary>
+    private void HandleTimeFreezeInput()
+    {
+        // 在时停期间，输入处理由PerfectAttack脚本接管
+        // 这里只需要确保不会触发其他移动逻辑
+    }
 
+    /// <summary>
+    /// 时停期间的移动处理（由PerfectAttack调用）
+    /// </summary>
+    /// <param name="inputDirection">输入方向</param>
+    /// <param name="speed">移动速度</param>
+    public void HandleTimeFreezeMovement(Vector2 inputDirection, float speed)
+    {
+        if (!isInTimeFreeze) return;
 
+        // 使用unscaledDeltaTime确保在时停期间正常移动
+        Vector3 movement = new Vector3(inputDirection.x, inputDirection.y, 0) * speed * Time.unscaledDeltaTime;
+        transform.position += movement;
 
+        // 直接设置Rigidbody速度
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.linearVelocity = inputDirection * speed;
+        }
 
+        // 更新方向
+        if (inputDirection != Vector2.zero)
+        {
+            playerDirection = inputDirection;
+        }
+    }
 
+    /// <summary>
+    /// 停止时停期间的移动
+    /// </summary>
+    public void StopTimeFreezeMovement()
+    {
+        if (!isInTimeFreeze) return;
+
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.linearVelocity = Vector2.zero;
+        }
+    }
+
+    /// <summary>
+    /// 时停期间的移动更新
+    /// </summary>
+    private void UpdateTimeFreezeMovement()
+    {
+        // 在时停期间，FixedUpdate中不执行常规的移动逻辑
+        // 移动完全由HandleTimeFreezeMovement控制
+    }
+
+    /// <summary>
+    /// 设置时停状态
+    /// </summary>
+    /// <param name="inTimeFreeze">是否在时停中</param>
+    public void SetTimeFreezeState(bool inTimeFreeze)
+    {
+        isInTimeFreeze = inTimeFreeze;
+        Debug.Log($"[PlayerMovementController] 时停状态设置为: {inTimeFreeze}");
+        
+        if (!inTimeFreeze)
+        {
+            // 退出时停时，清理状态
+            if (playerRigidbody != null)
+            {
+                playerRigidbody.linearVelocity = Vector2.zero;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 获取时停状态
+    /// </summary>
+    /// <returns>是否在时停中</returns>
+    public bool GetTimeFreezeState()
+    {
+        return isInTimeFreeze;
+    }
+    #endregion
 
     private void mousePositionDirection(){
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -142,12 +221,10 @@ public class PlayerMovementController : MonoBehaviour
         mouseDirection = ((Vector2)mouseWorldPos - playerRigidbody.position).normalized;
     }
 
-
     //实时更新移速
     private void UpdateSpeed(){
         moveSpeed = baseSpeed + extraSpeed;
     }
-
 
     //普通移动
     private void UpdateNormalMovement()
@@ -160,7 +237,6 @@ public class PlayerMovementController : MonoBehaviour
             Input.GetAxisRaw("Vertical")
         ).normalized;
 
-
         if (inputDirection.magnitude > 0.1f)
         {
             playerDirection = inputDirection;
@@ -171,9 +247,6 @@ public class PlayerMovementController : MonoBehaviour
                 Debug.Log("移动检测");
                 isMoveCheck = true;
             }
-
-
-
         }
 
         // 计算目标速度
@@ -185,10 +258,7 @@ public class PlayerMovementController : MonoBehaviour
             : Vector2.Lerp(currentVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
 
         playerRigidbody.linearVelocity = currentVelocity;
-
     }
-
-
 
     //根据输入判定冲刺类型
     private void HandleDashInput()
@@ -219,9 +289,7 @@ public class PlayerMovementController : MonoBehaviour
                 pressSpaceTimer = 0;
             }
         }    
-
     }
-
 
     public void StartDash()
     {
@@ -233,15 +301,12 @@ public class PlayerMovementController : MonoBehaviour
             Input.GetAxisRaw("Vertical")
         ).normalized;
 
-
-
         dashDirection = inputDirection.magnitude > 0.1f 
             ? inputDirection.normalized 
             : playerDirection;
 
         //重置当前速度
         currentVelocity = Vector2.zero;
-
     }
 
     private void UpdateDash()
@@ -274,16 +339,13 @@ public class PlayerMovementController : MonoBehaviour
         isDashing = false;
         cooldownTimer = dashCooldown;
         playerRigidbody.linearVelocity = Vector2.zero;
-        //print("end D");
     }
-
 
     public void StartUltimateDash(){
         isUltimateDashing = true;
         if(isMouseControl){
             playerDirection = mouseDirection;
         }
-
 
         if (!isUltimateDashCheck && isDashCheck)
         {
@@ -293,9 +355,7 @@ public class PlayerMovementController : MonoBehaviour
             TutorialManager.Instance.ShowScarecrow();
             isUltimateDashCheck = true;
         }
-
     }
-
 
     private void UltimateDashing(){
         if(isSpacedLock == false){
@@ -325,25 +385,18 @@ public class PlayerMovementController : MonoBehaviour
                 playerRigidbody.linearVelocity = dashDirection * moveSpeed;
             }
         }
-
-
     }
 
     private void HandleUltimateDashInput(){
         if(isUltimateDashing == true){
-            //print("1");
             if(Input.GetButtonUp("Jump")){
                 isStartAttackRecory = true;
                 if(isPerfectAttack == false){
-                    print('2');
                     isSpacedLock = true;
-                    print(isSpacedLock);
                 }
-
             }
         }
     }
-
 
     private void AttackRecovery(){
         if(isStartAttackRecory == true){
@@ -357,11 +410,9 @@ public class PlayerMovementController : MonoBehaviour
                 attackRecoveryTimer = -1;
             }else if(attackRecoveryTimer < 0){
                 EndUltimateDash();
-
             }
         }
     }
-
 
     private void EndUltimateDash(){
         isDashing = false;
@@ -376,23 +427,16 @@ public class PlayerMovementController : MonoBehaviour
         isSpacedLock = false;
     }
 
-
     private void BackwardJump(){
-
         if(isBackwardJump && backwardJumpTimer > 0){
             backwardJumpTimer -= Time.fixedDeltaTime;
-            player.transform.position -= (Vector3)(playerDirection * 0.5f);
-            print(playerDirection);
         }
         if(isBackwardJump && backwardJumpTimer <= 0){
             isBackwardJump = false;
             backwardJumpTimer = maxAttackRecoveryTime;
             EndUltimateDash();
-            
         }
     }
-
-
 
     private void UpdateTimers()
     {
@@ -402,15 +446,7 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
-
-
+    // 所有原有的公共方法保持不变...
     public Vector2 GetDirection(){
         return playerDirection;
     }
@@ -439,15 +475,9 @@ public class PlayerMovementController : MonoBehaviour
         cooldownTimer = value;
     }
 
-
     public void SetAttackRecoryState(bool value){
         isStartAttackRecory = value;
     }
-
-
-
-
-
 
     public void SetBackwardJumpState(bool value)
     {
@@ -481,7 +511,7 @@ public class PlayerMovementController : MonoBehaviour
         dashDirection = direction.normalized;
     }
 
-        public void SetDashState(int state)
+    public void SetDashState(int state)
     {
         switch (state)
         {
@@ -533,40 +563,34 @@ public class PlayerMovementController : MonoBehaviour
 
     public void ForceUltimateDash()
     {
-        forceUltimateDash = true;   // 标记，等待Update里处理
+        forceUltimateDash = true;
     }
 
-
     public void PrepareUltimateDash()
-{
-    isUltimateDashing = true;
-    dashTimer = 0f;
-    extraSpeed = 0f;
-    isSpacedLock = false;
-    directionLock = false;
+    {
+        isUltimateDashing = true;
+        dashTimer = 0f;
+        extraSpeed = 0f;
+        isSpacedLock = false;
+        directionLock = false;
 
-    Vector2 inputDirection = new Vector2(
-        Input.GetAxisRaw("Horizontal"),
-        Input.GetAxisRaw("Vertical")
-    ).normalized;
-    dashDirection = inputDirection.magnitude > 0.1f ? inputDirection.normalized : playerDirection;
-    playerRigidbody.linearVelocity = Vector2.zero;
+        Vector2 inputDirection = new Vector2(
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+        ).normalized;
+        dashDirection = inputDirection.magnitude > 0.1f ? inputDirection.normalized : playerDirection;
+        playerRigidbody.linearVelocity = Vector2.zero;
 
-    Debug.Log("[PrepareUltimateDash] 极限冲刺准备完成！");
-    
-}
-
+        Debug.Log("[PrepareUltimateDash] 极限冲刺准备完成！");
+    }
 
     public bool GetisStartAttackRecory(){
         return isStartAttackRecory;
     }
 
-
-
     public void SetisStartAttackRecory(bool value){
         isStartAttackRecory = value;
     }
-
 
     //用于 PerfectAttack 恢复移动
     public void ForceMoveInDirection(Vector2 inputDirection)
@@ -579,33 +603,17 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-
     public bool GetisBackJump()
     {
         return isBackwardJump;
     }
 
-
-
     public void SetIsDead(bool isPlayerDead){
         isDead = isPlayerDead;
     }
-
-
 
     public void SetPlayerLock(bool value){
         //true：不可操作  false：可操作
         playerLock = value;
     }
-
-
-
-
-
-
-
-
-
-
 }
-

@@ -19,11 +19,11 @@ public class AfterImageController : MonoBehaviour
     private SpriteRenderer playerRenderer;
     private Sprite lastSprite;
 
-    private PlayerAnimatorManager playerAnimatorManager;
+    private PlayerAnimatorManager_01 playerAnimatorManager;
 
     void Start()
     {
-        playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+        playerAnimatorManager = GetComponent<PlayerAnimatorManager_01>();
         playerRenderer = GetComponent<SpriteRenderer>();
         if (playerRenderer == null)
         {
