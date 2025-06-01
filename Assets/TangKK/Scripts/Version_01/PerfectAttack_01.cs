@@ -36,14 +36,32 @@ namespace TangKK
         private float pressSpaceTimer = 0f;
         private Rigidbody2D playerRigidbody;
 
-        private void Awake()
+        // 🔥 新增：保存时停前的状态，用于更好的恢复
+        private int preFreezeDashState;
+        private bool preFreezeSpaceLock;
+        private bool preFreezeDirectionLock;
+
+        private void Start()
         {
             spearColliderManager = GetComponent<SpearColliderManager_01>();
+            
+            // 🔥 添加空值检查
+            if (playerMovementController == null)
+            {
+                Debug.LogError("[PerfectAttack] playerMovementController 未分配！请在Inspector中设置。", this);
+                return;
+            }
+            
             playerRigidbody = playerMovementController.GetComponent<Rigidbody2D>();
+            
+            if (playerRigidbody == null)
+            {
+                Debug.LogError("[PerfectAttack] PlayerMovementController上没有找到Rigidbody2D组件！", this);
+            }
 
             if (attackManager == null)
             {
-                attackManager = FindObjectOfType<AttackManager_01>();
+                attackManager = GetComponent<AttackManager_01>();
             }
         }
 
@@ -147,12 +165,19 @@ namespace TangKK
 
             freezeTimer = 0f;
             pressSpaceTimer = 0f;
+            CinemachineTimeStopUpdater.Instance.Enter();
 
             // 启动时停特效
             timeStopEffect?.Activate();
 
+            // 🔥 保存当前状态以便更好的恢复
+            SavePreFreezeState();
+
             // 保存当前状态
-            frozenVelocity = playerRigidbody.linearVelocity;
+            if (playerRigidbody != null)
+            {
+                frozenVelocity = playerRigidbody.linearVelocity;
+            }
             frozenDirection = playerMovementController.GetDirection();
             frozenPosition = transform.position;
 
@@ -178,6 +203,17 @@ namespace TangKK
             yield break;
         }
 
+        // 🔥 新增：保存时停前的状态
+        private void SavePreFreezeState()
+        {
+            preFreezeDashState = playerMovementController.GetDashState();
+            preFreezeSpaceLock = playerMovementController.GetSpaceLock();
+            // preFreezeDirectionLock 暂时没有对应的获取方法，可以默认为false
+            preFreezeDirectionLock = false;
+            
+            Debug.Log($"[PerfectAttack] 保存时停前状态 - DashState: {preFreezeDashState}, SpaceLock: {preFreezeSpaceLock}");
+        }
+
         private void ResumeTime(bool fromSpaceKey, float spaceDuration)
         {
             Debug.Log($"[ResumeTime] 执行，fromSpaceKey={fromSpaceKey}, spaceDuration={spaceDuration}");
@@ -186,13 +222,13 @@ namespace TangKK
             Time.timeScale = 1f;
             timeStopEffect?.Deactivate();
             isFreezing = false;
+            CinemachineTimeStopUpdater.Instance.Exit();
 
             // 退出时停状态
             playerMovementController.SetTimeFreezeState(false);
 
-            // 解除控制限制
-            playerMovementController.SetSpaceLock(false);
-            playerMovementController.LockDirection(false);
+            // 🔥 关键修改：统一的状态清理，确保一致性
+            ResetPlayerStateForRecovery();
 
             // 确定恢复方向
             Vector2 resumeDir = GetResumeDirection();
@@ -205,7 +241,8 @@ namespace TangKK
                 }
                 else
                 {
-                    ExecuteNormalRecovery(resumeDir);
+                    // 🔥 关键修改：自动恢复时使用相同的逻辑
+                    ExecuteAutoRecovery(resumeDir);
                 }
             }
             catch (System.Exception ex)
@@ -215,6 +252,33 @@ namespace TangKK
 
             ResetTimers();
             TriggerAttackRecovery();
+        }
+
+        // 🔥 新增：统一的状态重置方法
+        private void ResetPlayerStateForRecovery()
+        {
+            // 🔥 关键修复：强制重置所有冲刺相关的内部标志
+            playerMovementController.SetUltimateDashing(false);     // 清除极限冲刺标志
+            playerMovementController.SetisStartAttackRecory(false); // 清除攻击恢复标志
+            playerMovementController.SetBackwardJumpState(false);   // 清除后跳标志
+            
+            // 🔥 最重要：强制设置为完全空闲状态
+            playerMovementController.SetDashState(0);
+            
+            // 清理控制锁定
+            playerMovementController.SetSpaceLock(false);
+            playerMovementController.LockDirection(false);
+            
+            // 🔥 重要：清除冷却时间，确保玩家可以立即操作
+            playerMovementController.SetDashCooldownTimer(0f);
+            
+            // 🔥 新增：清除额外速度，避免状态残留
+            playerMovementController.SetExtraSpeed(0f);
+            
+            // 🔥 关键修复：清零 PlayerMovementController 中的 pressSpaceTimer
+            playerMovementController.pressSpaceTimer = 0f;
+            
+            Debug.Log("[ResumeTime] 玩家状态已强制重置为空闲状态，pressSpaceTimer已清零");
         }
 
         private Vector2 GetResumeDirection()
@@ -250,20 +314,87 @@ namespace TangKK
             }
         }
 
-        private void ExecuteNormalRecovery(Vector2 resumeDir)
+        // 🔥 新的自动恢复方法：确保与手动恢复后的状态一致
+        private void ExecuteAutoRecovery(Vector2 resumeDir)
         {
-            playerMovementController.ForceMoveInDirection(resumeDir);
-            playerMovementController.SetDashState(0);
-            playerMovementController.SetisStartAttackRecory(false);
+            // 设置方向
+            playerMovementController.SetDirection(resumeDir);
+            playerMovementController.SetDashDirection(resumeDir);
+            
+            // 🔥 关键修复：确保玩家完全退出所有冲刺状态
             playerMovementController.SetUltimateDashing(false);
-            playerMovementController.SetBackwardJumpState(false);
-            Debug.Log("[时停] 自动恢复，无冲刺");
+            playerMovementController.SetisStartAttackRecory(false);
+            playerMovementController.SetDashState(0); // 强制设置为空闲状态
+            
+            // 🔥 关键修复：清零 PlayerMovementController 中的 pressSpaceTimer
+            playerMovementController.pressSpaceTimer = 0f;
+            
+            // 给予一个很小的初始移动，让玩家脱离时停位置
+            if (resumeDir != Vector2.zero)
+            {
+                playerMovementController.SetExtraSpeed(0f); // 确保没有额外速度
+            }
+            
+            // 🔥 新增：等待一帧后再最终确认状态
+            StartCoroutine(DelayedStateConfirmation());
+            
+            Debug.Log("[时停] 自动恢复完成，pressSpaceTimer已清零");
+        }
+
+        // 🔥 新增：延迟确认状态，确保系统稳定
+        private IEnumerator DelayedStateConfirmation()
+        {
+            // 等待一帧，让所有系统都完成状态更新
+            yield return null;
+            
+            // 🔥 关键修复：强制确认玩家处于空闲状态
+            playerMovementController.SetUltimateDashing(false);  // 再次确认清除极限冲刺
+            playerMovementController.SetisStartAttackRecory(false); // 再次确认清除攻击恢复
+            playerMovementController.SetSpaceLock(false);
+            playerMovementController.SetDashCooldownTimer(0f);
+            
+            // 🔥 关键修复：再次确认清零 pressSpaceTimer
+            playerMovementController.pressSpaceTimer = 0f;
+            
+            // 🔥 最关键：强制设置为状态0，确保下次空格键会触发状态1而不是保持状态2
+            playerMovementController.SetDashState(0);
+            
+            // 验证状态是否正确设置
+            int finalDashState = playerMovementController.GetDashState();
+            float finalPressSpaceTimer = playerMovementController.pressSpaceTimer;
+            
+            Debug.Log($"[DelayedStateConfirmation] 最终状态 - DashState: {finalDashState}, pressSpaceTimer: {finalPressSpaceTimer}");
+            
+            if (finalDashState != 0)
+            {
+                Debug.LogError($"[DelayedStateConfirmation] 警告！状态重置失败，当前状态: {finalDashState}，尝试再次重置...");
+                
+                // 如果还是不对，尝试更激进的重置
+                yield return new WaitForSecondsRealtime(0.1f);
+                playerMovementController.SetDashState(0);
+                playerMovementController.SetUltimateDashing(false);
+                playerMovementController.pressSpaceTimer = 0f;
+                
+                int retryState = playerMovementController.GetDashState();
+                Debug.Log($"[DelayedStateConfirmation] 重试后状态: {retryState}");
+            }
+            else
+            {
+                Debug.Log("[DelayedStateConfirmation] ✅ 状态确认完成，玩家可以正常冲刺 (状态0，pressSpaceTimer=0)");
+            }
         }
 
         private void ResetTimers()
         {
             pressSpaceTimer = 0f;
             freezeTimer = 0f;
+            
+            // 🔥 关键修复：同时清零 PlayerMovementController 中的 pressSpaceTimer
+            if (playerMovementController != null)
+            {
+                playerMovementController.pressSpaceTimer = 0f;
+                Debug.Log("[ResetTimers] 本地和控制器的 pressSpaceTimer 都已清零");
+            }
         }
 
         private void TriggerAttackRecovery()
@@ -292,6 +423,14 @@ namespace TangKK
             GUI.Label(new Rect(10, 30, 300, 20), $"空格计时: {pressSpaceTimer:F1}s");
             GUI.Label(new Rect(10, 50, 300, 20), $"当前方向: {currentInputDirection}");
             GUI.Label(new Rect(10, 70, 300, 20), $"自由移动: {allowFullMovement}");
+            
+            // 🔥 新增调试信息
+            if (playerMovementController != null)
+            {
+                GUI.Label(new Rect(10, 90, 300, 20), $"冲刺状态: {playerMovementController.GetDashState()}");
+                GUI.Label(new Rect(10, 110, 300, 20), $"空格锁: {playerMovementController.GetSpaceLock()}");
+                GUI.Label(new Rect(10, 130, 300, 20), $"攻击恢复: {playerMovementController.GetisStartAttackRecory()}");
+            }
         }
     }
 }

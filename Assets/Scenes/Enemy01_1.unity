@@ -2463,6 +2463,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6411086261e312849a40378e39c63c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAttackHit: 0
+  canTriggerPerfectAttack: 1
 --- !u!114 &1102117679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2475,6 +2477,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78e7bb261018b74aaf8f0e91cbc90d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freezeDuration: 3
+  playerMovementController: {fileID: 0}
+  speedPreserveRatio: 0.7
+  playerAnimatorManager: {fileID: 0}
+  timeStopEffect: {fileID: 0}
+  attackManager: {fileID: 0}
+  isFreezing: 0
 --- !u!114 &1102117680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2487,6 +2496,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b72466c05a4b64499f92a1d15a32016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableOffset: 0
+  spearColliderObject: {fileID: 0}
+  characterTransform: {fileID: 0}
+  angleOffset: -90
+  attackOffsetDistance: 1
+  defaultLocalPosition: {x: 0, y: 0, z: 0}
+  slideSpeed: 10
+  offsetDuration: 0.5
+  slideCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  characterAnimator: {fileID: 0}
+  attackOffsetProgress: 0
+  phase1Triggered: 0
+  phase2Triggered: 0
 --- !u!60 &1102117681
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3590,6 +3635,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d3e00ceefab7d84a873150a1479144c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableAfterImage: 0
+  afterImagePrefab: {fileID: 0}
+  afterImageColor: {r: 1, g: 1, b: 1, a: 0.5}
+  afterImageDuration: 0.3
 --- !u!1 &1872349415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5385155921453438165, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
@@ -3607,6 +3656,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d3e00ceefab7d84a873150a1479144c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableAfterImage: 0
+  afterImagePrefab: {fileID: 0}
+  afterImageColor: {r: 1, g: 1, b: 1, a: 0.5}
+  afterImageDuration: 0.3
 --- !u!1 &1913309377
 GameObject:
   m_ObjectHideFlags: 0
@@ -3933,6 +3986,10 @@ PrefabInstance:
       propertyPath: movementController
       value: 
       objectReference: {fileID: 635196846}
+    - target: {fileID: 1924122191313031172, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2946043326695047574, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3952,6 +4009,10 @@ PrefabInstance:
     - target: {fileID: 3068573301307625138, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 0.68399996
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369532240216579401, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3369532240216579401, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
       propertyPath: timeStopEffect
@@ -4078,11 +4139,12 @@ PrefabInstance:
       value: -10
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 7163326075015396309, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-    - {fileID: 3068573301307625138, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-    - {fileID: 375662164963217680, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-    - {fileID: 8488472333121268282, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
-    - {fileID: 8170861490949369468, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 5788508797325232053, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7484569821884202345, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
     - {fileID: 155675240267610608, guid: c08e3a9e1f3625e4fbe842392ab5a9eb, type: 3}
@@ -4174,7 +4236,7 @@ MonoBehaviour:
   spearColliderObject: {fileID: 1932723599}
   characterTransform: {fileID: 635196847}
   angleOffset: -90
-  attackOffsetDistance: -0.35
+  attackOffsetDistance: -0.4
   defaultLocalPosition: {x: -0.02, y: 0, z: 0}
   slideSpeed: 20
   offsetDuration: 0.0167
