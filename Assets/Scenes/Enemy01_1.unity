@@ -880,7 +880,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 3
+  m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -3308,6 +3308,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1619094604 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1006826327320096478, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
+  m_PrefabInstance: {fileID: 8817253234843275803}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1624943503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4855,25 +4860,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 635196847}
     - target: {fileID: 419520492716648852, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
+      propertyPath: m_ComponentOwner
+      value: 
+      objectReference: {fileID: 1619094604}
+    - target: {fileID: 419520492716648852, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: m_Lens.OrthographicSize
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 635196847}
+      objectReference: {fileID: 0}
     - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: maxSize
-      value: 12.5
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: minSize
-      value: 6.5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1889903974061609148, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: playerMovementController
       value: 
-      objectReference: {fileID: 635196846}
+      objectReference: {fileID: 0}
     - target: {fileID: 2312971978669279411, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -4896,7 +4905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6684642922723078491, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.5299997
+      value: -10.209999
       objectReference: {fileID: 0}
     - target: {fileID: 6684642922723078491, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4929,6 +4938,14 @@ PrefabInstance:
     - target: {fileID: 6684642922723078491, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101186754793141035, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
+      propertyPath: m_DeadZoneWidth
+      value: 1.098
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101186754793141035, guid: eee277cec1c94a244915d3ac718bb3a9, type: 3}
+      propertyPath: m_SoftZoneWidth
+      value: 1.098
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -45,7 +45,7 @@ public class CinemachineTimeStopUpdater : MonoBehaviour
         isActive = false;
         if (brain != null)
         {
-            brain.m_UpdateMethod = CinemachineBrain.UpdateMethod.LateUpdate; // 或 SmartUpdate，根据你的默认值
+            brain.m_UpdateMethod = CinemachineBrain.UpdateMethod.SmartUpdate; // 或 SmartUpdate，根据你的默认值
         }
     }
 }
