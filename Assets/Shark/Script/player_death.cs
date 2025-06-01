@@ -47,7 +47,7 @@ public class player_death : MonoBehaviour
         }
         movementController.SetIsDead(true);
         isDead = true;
-        GetComponent<PlayerAnimatorManager>().isDie = true;
+        GetComponent<PlayerAnimatorManager_01>().isDie = true;
         
         Rigidbody2D parentRb = GetComponentInParent<Rigidbody2D>();
         if (parentRb != null)
