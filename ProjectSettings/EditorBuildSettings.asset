@@ -6,17 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Dabu/Scenes/Tutorial01.unity
-    guid: 713ae8206fb32f44ca7dce2ebf29258b
+    path: Assets/Scenes/Tutorial01_1.unity
+    guid: a5bbc75963031b64eb0fb7fcd563279d
   - enabled: 1
-    path: Assets/Dabu/Scenes/Enemy01.unity
-    guid: f771d0f5b69842c42b072673a2494c42
-  - enabled: 1
-    path: Assets/TangKK/Scenes/Tutorial01_1.unity
-    guid: 0cdaba853c005494baf469c0bc5dafa2
-  - enabled: 1
-    path: Assets/TangKK/Scenes/Enemy01_1.unity
-    guid: b76f3084ae6c6e74bbf92d61d4e0942e
+    path: Assets/Scenes/Enemy01_1.unity
+    guid: 615c4b10a5600274598716e5de8bd578
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
